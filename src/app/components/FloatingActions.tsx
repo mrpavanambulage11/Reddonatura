@@ -144,15 +144,15 @@ export function FloatingActions() {
                   initial={{ opacity: 0, y: 10, scale: 0.97 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                  className={`flex items-end gap-2 ${m.sender === "user" ? "flex-row-reverse" : ""}`}
+                  className={`flex items-start gap-2 ${m.sender === "user" ? "flex-row-reverse" : ""}`}
                 >
                   {m.sender === "bot" && (
-                    <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                    <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mt-0.5" style={{ boxShadow: "0 2px 6px rgba(5,49,20,0.15)" }}>
                       <img src={botAvatar} alt="" className="w-full h-full object-cover" />
                     </div>
                   )}
                   <div
-                    className={`px-3.5 py-2.5 max-w-[78%] ${m.sender === "bot" ? "rounded-2xl rounded-bl-sm" : "rounded-2xl rounded-br-sm"}`}
+                    className={`px-3.5 py-2.5 max-w-[78%] ${m.sender === "bot" ? "rounded-2xl rounded-tl-sm" : "rounded-2xl rounded-tr-sm"}`}
                     style={{
                       backgroundColor: m.sender === "bot" ? "#ffffff" : "#178B4C",
                       border: m.sender === "bot" ? "1px solid rgba(23,139,76,0.12)" : "none",
@@ -172,12 +172,12 @@ export function FloatingActions() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 6 }}
-                    className="flex items-end gap-2"
+                    className="flex items-start gap-2"
                   >
-                    <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                    <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mt-0.5" style={{ boxShadow: "0 2px 6px rgba(5,49,20,0.15)" }}>
                       <img src={botAvatar} alt="" className="w-full h-full object-cover" />
                     </div>
-                    <div className="flex items-center gap-1 px-4 py-3 rounded-2xl rounded-bl-sm" style={{ backgroundColor: "#ffffff", border: "1px solid rgba(23,139,76,0.12)", boxShadow: "0 4px 14px rgba(5,49,20,0.06)" }}>
+                    <div className="flex items-center gap-1 px-4 py-3 rounded-2xl rounded-tl-sm" style={{ backgroundColor: "#ffffff", border: "1px solid rgba(23,139,76,0.12)", boxShadow: "0 4px 14px rgba(5,49,20,0.06)" }}>
                       {[0, 1, 2].map((i) => (
                         <motion.span
                           key={i}
