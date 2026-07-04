@@ -97,7 +97,7 @@ export function FloatingActions() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-[60] flex flex-col items-end gap-4">
+    <div className="fixed bottom-6 right-6 z-[60] flex flex-col items-end gap-5">
       <AnimatePresence>
         {chatOpen && (
           <motion.div
@@ -287,9 +287,9 @@ export function FloatingActions() {
           <span
             className="absolute rounded-full transition-opacity duration-300 pointer-events-none"
             style={{
-              inset: "-6px",
+              inset: "-8px",
               background: a.glow,
-              filter: "blur(14px)",
+              filter: "blur(16px)",
               opacity: hovered === a.key ? 0.55 : 0.28,
               zIndex: -1,
             }}
@@ -300,16 +300,16 @@ export function FloatingActions() {
             target={a.external ? "_blank" : undefined}
             rel={a.external ? "noopener noreferrer" : undefined}
             aria-label={a.label}
-            className="group flex items-center justify-center rounded-full transition-all duration-300 hover:-translate-y-1.5 hover:scale-110"
+            className="group flex items-center justify-center rounded-full flex-shrink-0 transition-all duration-300 hover:-translate-y-1.5 hover:scale-110"
             style={{
-              width: "52px",
-              height: "52px",
+              width: "64px",
+              height: "64px",
               background: a.bg,
               border: "1.5px solid rgba(255,255,255,0.4)",
-              boxShadow: `0 12px 26px ${a.ring}, inset 0 1.5px 1.5px rgba(255,255,255,0.5), inset 0 -8px 12px rgba(0,0,0,0.12)`,
+              boxShadow: `0 14px 30px ${a.ring}, inset 0 1.5px 1.5px rgba(255,255,255,0.5), inset 0 -8px 12px rgba(0,0,0,0.12)`,
             }}
           >
-            <a.icon className="w-5 h-5 transition-transform duration-300 group-hover:scale-110 drop-shadow-sm" style={{ color: "#ffffff" }} />
+            <a.icon className="w-7 h-7 transition-transform duration-300 group-hover:scale-110 drop-shadow-sm" style={{ color: "#ffffff" }} />
           </a>
         </motion.div>
       ))}
@@ -371,19 +371,19 @@ export function FloatingActions() {
         {/* Ambient glow halo */}
         <span
           className="absolute rounded-full transition-opacity duration-300 pointer-events-none"
-          style={{ inset: "-8px", background: "radial-gradient(circle, #D9B65C, #178B4C 65%)", filter: "blur(18px)", opacity: hovered === "chatbot" ? 0.65 : 0.4, zIndex: -1 }}
+          style={{ inset: "-10px", background: "radial-gradient(circle, #D9B65C, #178B4C 65%)", filter: "blur(20px)", opacity: hovered === "chatbot" ? 0.65 : 0.4, zIndex: -1 }}
         />
 
         <button
           onClick={() => { setChatOpen((v) => !v); setShowGreeting(false); }}
           aria-label="Chat with Reddonatura"
-          className="group relative flex items-center justify-center rounded-full overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:scale-110"
+          className="group relative flex items-center justify-center rounded-full overflow-hidden flex-shrink-0 transition-all duration-300 hover:-translate-y-1.5 hover:scale-110"
           style={{
-            width: "62px",
-            height: "62px",
+            width: "78px",
+            height: "78px",
             backgroundColor: "#103a1f",
             border: "2px solid rgba(217,182,92,0.5)",
-            boxShadow: "0 16px 36px rgba(5,49,20,0.5), inset 0 1.5px 1.5px rgba(255,255,255,0.3)",
+            boxShadow: "0 18px 40px rgba(5,49,20,0.5), inset 0 1.5px 1.5px rgba(255,255,255,0.3)",
           }}
         >
           {!chatOpen && (
@@ -395,15 +395,15 @@ export function FloatingActions() {
           {!chatOpen && (
             <span
               className="absolute flex items-center justify-center rounded-full z-10"
-              style={{ top: "-3px", right: "-3px", width: "16px", height: "16px", backgroundColor: "#ffffff", boxShadow: "0 2px 6px rgba(0,0,0,0.25)" }}
+              style={{ top: "-3px", right: "-3px", width: "18px", height: "18px", backgroundColor: "#ffffff", boxShadow: "0 2px 6px rgba(0,0,0,0.25)" }}
             >
-              <span className="w-2 h-2 rounded-full" style={{ backgroundColor: "#4ade80" }} />
+              <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: "#4ade80" }} />
             </span>
           )}
           <AnimatePresence mode="wait" initial={false}>
             {chatOpen ? (
               <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
-                <X className="w-6 h-6" style={{ color: "#ffffff" }} />
+                <X className="w-7 h-7" style={{ color: "#ffffff" }} />
               </motion.div>
             ) : (
               <motion.div key="bot" initial={{ rotate: 90, opacity: 0, scale: 0.6 }} animate={{ rotate: 0, opacity: 1, scale: 1 }} exit={{ rotate: -90, opacity: 0, scale: 0.6 }} transition={{ duration: 0.25 }} className="w-full h-full">
