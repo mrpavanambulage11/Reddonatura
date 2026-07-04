@@ -76,16 +76,16 @@ export function ClientsPage() {
 
       <Section bg="#F5F4EF">
         <div className="text-center mb-10"><SectionLabel label="Trusted By" /></div>
-        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-8 gap-3">
+        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-9 gap-3">
           {logos.map((logo, i) => (
             <motion.div key={logo.name} initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.35, delay: 0.04 * i }}
               className="flex items-center justify-center p-3 rounded-2xl transition-all duration-300 hover:-translate-y-1"
-              style={{ backgroundColor: "#ffffff", border: "1px solid rgba(23,139,76,0.12)", boxShadow: "0 4px 16px rgba(0,0,0,0.05)", height: "64px" }}>
+              style={{ backgroundColor: "#ffffff", border: "1px solid rgba(23,139,76,0.12)", boxShadow: "0 4px 16px rgba(0,0,0,0.05)", height: "80px" }}>
               <img loading="lazy" decoding="async"
                 src={logo.src}
                 alt={logo.name}
                 className="max-w-full object-contain transition-transform duration-300 hover:scale-105"
-                style={{ maxHeight: "32px" }}
+                style={{ maxHeight: "44px" }}
               />
             </motion.div>
           ))}
