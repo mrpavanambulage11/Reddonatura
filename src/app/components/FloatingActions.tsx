@@ -308,14 +308,14 @@ export function FloatingActions() {
             target={a.external ? "_blank" : undefined}
             rel={a.external ? "noopener noreferrer" : undefined}
             aria-label={a.label}
-            className="group flex items-center justify-center rounded-full flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 transition-all duration-300 hover:-translate-y-1.5 hover:scale-110"
+            className="group flex items-center justify-center rounded-full flex-shrink-0 w-11 h-11 sm:w-12 sm:h-12 transition-all duration-300 hover:-translate-y-1.5 hover:scale-110"
             style={{
               background: a.bg,
               border: "1.5px solid rgba(255,255,255,0.4)",
               boxShadow: `0 14px 30px ${a.ring}, inset 0 1.5px 1.5px rgba(255,255,255,0.5), inset 0 -8px 12px rgba(0,0,0,0.12)`,
             }}
           >
-            <a.icon className="w-6 h-6 sm:w-7 sm:h-7 transition-transform duration-300 group-hover:scale-110 drop-shadow-sm" style={{ color: "#ffffff" }} />
+            <a.icon className="w-5 h-5 transition-transform duration-300 group-hover:scale-110 drop-shadow-sm" style={{ color: "#ffffff" }} />
           </a>
         </motion.div>
       ))}
@@ -337,14 +337,14 @@ export function FloatingActions() {
                 transition={{ duration: 0.2, delay: i * 0.05, ease: [0.22, 1, 0.36, 1] }}
                 className="flex items-center justify-center rounded-full flex-shrink-0"
                 style={{
-                  width: "52px",
-                  height: "52px",
+                  width: "42px",
+                  height: "42px",
                   background: a.bg,
                   border: "1.5px solid rgba(255,255,255,0.4)",
                   boxShadow: `0 10px 22px ${a.ring}`,
                 }}
               >
-                <a.icon className="w-5 h-5" style={{ color: "#ffffff" }} />
+                <a.icon className="w-4 h-4" style={{ color: "#ffffff" }} />
               </motion.a>
             ))}
         </AnimatePresence>
@@ -352,7 +352,7 @@ export function FloatingActions() {
         <button
           onClick={() => setMobileExpanded((v) => !v)}
           aria-label={mobileExpanded ? "Close quick contact options" : "Quick contact options"}
-          className="flex items-center justify-center rounded-full flex-shrink-0 w-14 h-14 transition-transform duration-300 active:scale-95"
+          className="flex items-center justify-center rounded-full flex-shrink-0 w-11 h-11 transition-transform duration-300 active:scale-95"
           style={{
             background: "linear-gradient(145deg, #1FA05A, #0D8239 70%)",
             border: "1.5px solid rgba(255,255,255,0.4)",
@@ -436,7 +436,7 @@ export function FloatingActions() {
         <button
           onClick={() => { setChatOpen((v) => !v); setShowGreeting(false); setMobileExpanded(false); }}
           aria-label="Chat with Reddonatura"
-          className="group relative flex items-center justify-center rounded-full overflow-hidden flex-shrink-0 w-16 h-16 sm:w-[78px] sm:h-[78px] transition-all duration-300 hover:-translate-y-1.5 hover:scale-110"
+          className="group relative flex items-center justify-center rounded-full overflow-hidden flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 transition-all duration-300 hover:-translate-y-1.5 hover:scale-110"
           style={{
             backgroundColor: "#103a1f",
             border: "2px solid rgba(217,182,92,0.5)",
@@ -460,7 +460,7 @@ export function FloatingActions() {
           <AnimatePresence mode="wait" initial={false}>
             {chatOpen ? (
               <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
-                <X className="w-6 h-6 sm:w-7 sm:h-7" style={{ color: "#ffffff" }} />
+                <X className="w-5 h-5 sm:w-6 sm:h-6" style={{ color: "#ffffff" }} />
               </motion.div>
             ) : (
               <motion.div key="bot" initial={{ rotate: 90, opacity: 0, scale: 0.6 }} animate={{ rotate: 0, opacity: 1, scale: 1 }} exit={{ rotate: -90, opacity: 0, scale: 0.6 }} transition={{ duration: 0.25 }} className="w-full h-full">
