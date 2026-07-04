@@ -51,7 +51,7 @@ const actions = [
   },
 ];
 
-type ChatMessage = { id: number; sender: "bot" | "user"; text: string };
+type ChatMessage = { id: number; sender: "bot" | "user"; text: string; isFallback?: boolean };
 
 let msgId = 0;
 
@@ -93,7 +93,8 @@ export function FloatingActions() {
     const delay = 700 + Math.random() * 500;
     setTimeout(() => {
       setIsTyping(false);
-      setMessages((m) => [...m, { id: msgId++, sender: "bot", text: getBotAnswer(trimmed) }]);
+      const { text, isFallback } = getBotAnswer(trimmed);
+      setMessages((m) => [...m, { id: msgId++, sender: "bot", text, isFallback }]);
     }, delay);
   };
 
@@ -151,25 +152,42 @@ export function FloatingActions() {
                   initial={{ opacity: 0, y: 10, scale: 0.97 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                  className={`flex items-start gap-2 ${m.sender === "user" ? "flex-row-reverse" : ""}`}
+                  className={`flex flex-col ${m.sender === "user" ? "items-end" : "items-start"}`}
                 >
-                  {m.sender === "bot" && (
-                    <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mt-0.5" style={{ boxShadow: "0 2px 6px rgba(5,49,20,0.15)" }}>
-                      <img src={botAvatar} alt="" className="w-full h-full object-cover" />
+                  <div className={`flex items-start gap-2 ${m.sender === "user" ? "flex-row-reverse" : ""}`}>
+                    {m.sender === "bot" && (
+                      <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mt-0.5" style={{ boxShadow: "0 2px 6px rgba(5,49,20,0.15)" }}>
+                        <img src={botAvatar} alt="" className="w-full h-full object-cover" />
+                      </div>
+                    )}
+                    <div
+                      className={`px-3.5 py-2.5 max-w-[78%] ${m.sender === "bot" ? "rounded-2xl rounded-tl-sm" : "rounded-2xl rounded-tr-sm"}`}
+                      style={{
+                        backgroundColor: m.sender === "bot" ? "#ffffff" : "#178B4C",
+                        border: m.sender === "bot" ? "1px solid rgba(23,139,76,0.12)" : "none",
+                        boxShadow: m.sender === "bot" ? "0 4px 14px rgba(5,49,20,0.06)" : "0 6px 16px rgba(23,139,76,0.3)",
+                      }}
+                    >
+                      <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 400, fontSize: "0.83rem", lineHeight: 1.6, color: m.sender === "bot" ? "#053114" : "#ffffff" }}>
+                        {m.text}
+                      </p>
                     </div>
-                  )}
-                  <div
-                    className={`px-3.5 py-2.5 max-w-[78%] ${m.sender === "bot" ? "rounded-2xl rounded-tl-sm" : "rounded-2xl rounded-tr-sm"}`}
-                    style={{
-                      backgroundColor: m.sender === "bot" ? "#ffffff" : "#178B4C",
-                      border: m.sender === "bot" ? "1px solid rgba(23,139,76,0.12)" : "none",
-                      boxShadow: m.sender === "bot" ? "0 4px 14px rgba(5,49,20,0.06)" : "0 6px 16px rgba(23,139,76,0.3)",
-                    }}
-                  >
-                    <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 400, fontSize: "0.83rem", lineHeight: 1.6, color: m.sender === "bot" ? "#053114" : "#ffffff" }}>
-                      {m.text}
-                    </p>
                   </div>
+
+                  {m.sender === "bot" && m.isFallback && (
+                    <a
+                      href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-2 ml-8 inline-flex items-center gap-2 px-3.5 py-2 rounded-full transition-all duration-200 hover:-translate-y-0.5"
+                      style={{ backgroundColor: "#25D366", boxShadow: "0 6px 16px rgba(37,211,102,0.35)" }}
+                    >
+                      <WhatsAppGlyph className="w-3.5 h-3.5" style={{ color: "#ffffff" }} />
+                      <span style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: "0.76rem", color: "#ffffff" }}>
+                        Continue on WhatsApp
+                      </span>
+                    </a>
+                  )}
                 </motion.div>
               ))}
 

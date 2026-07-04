@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { X, ArrowRight, ArrowLeft, CheckCircle2 } from "lucide-react";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 
 interface Props {
   open: boolean;
@@ -124,8 +124,6 @@ export function LeadFormModal({ open, onClose }: Props) {
     name: "", company: "", country: "", email: "", dialCode: "+91", phone: "",
   });
 
-  if (!open) return null;
-
   const currentAnswer = step < QUESTIONS.length ? answers[step] : "";
   const canNext = step < QUESTIONS.length ? !!answers[step] : true;
 
@@ -166,7 +164,7 @@ export function LeadFormModal({ open, onClose }: Props) {
 
   const progressPct = ((step) / TOTAL_STEPS) * 100;
 
-  const inputClass = "w-full px-4 py-2.5 outline-none focus:ring-1 focus:ring-[#0D8239] transition-all";
+  const inputClass = "w-full px-4 py-2.5 rounded-lg outline-none focus:ring-2 focus:ring-[#0D8239]/40 transition-all";
   const inputStyle = {
     border: "1.5px solid rgba(12,26,13,0.12)",
     fontFamily: "'DM Sans', sans-serif",
@@ -175,21 +173,30 @@ export function LeadFormModal({ open, onClose }: Props) {
   };
 
   return (
-    <div
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4"
-      style={{ backgroundColor: "rgba(11,31,16,0.88)", backdropFilter: "blur(6px)" }}
-      /* NO onClick close on backdrop */
-    >
-      <motion.div
-        initial={{ opacity: 0, scale: 0.96, y: 16 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 0.25 }}
-        className="relative w-full max-w-2xl max-h-[92vh] overflow-y-auto"
-        style={{ backgroundColor: "#fff", boxShadow: "0 40px 80px rgba(5,49,20,0.35)" }}
-        onClick={e => e.stopPropagation()}
-      >
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          key="lead-form-backdrop"
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+          style={{ backgroundColor: "rgba(11,31,16,0.88)", backdropFilter: "blur(8px)" }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.18, ease: "easeOut" }}
+          /* NO onClick close on backdrop */
+        >
+          <motion.div
+            key="lead-form-panel"
+            initial={{ opacity: 0, scale: 0.94, y: 22 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.96, y: 14 }}
+            transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+            className="relative w-full max-w-2xl max-h-[92vh] overflow-y-auto rounded-[26px]"
+            style={{ backgroundColor: "#fff", boxShadow: "0 50px 100px rgba(5,49,20,0.42), 0 0 0 1px rgba(217,182,92,0.16)" }}
+            onClick={e => e.stopPropagation()}
+          >
         {/* Golden top accent */}
-        <div className="h-[3px] w-full" style={{ backgroundColor: "#A0780E" }} />
+        <div className="h-[4px] w-full" style={{ background: "linear-gradient(90deg, #A0780E, #D9B65C, #A0780E)" }} />
 
         {/* Progress bar */}
         {!submitted && (
@@ -204,7 +211,7 @@ export function LeadFormModal({ open, onClose }: Props) {
         {/* Close button */}
         <button
           onClick={reset}
-          className="absolute top-2 right-2 z-10 w-11 h-11 flex items-center justify-center rounded-full transition-colors hover:bg-black/5 active:bg-black/10"
+          className="absolute top-3 right-3 z-10 w-10 h-10 flex items-center justify-center rounded-full transition-all duration-200 hover:bg-black/5 hover:rotate-90 active:bg-black/10"
           style={{ color: "#0C1A0D" }}
           aria-label="Close"
         >
@@ -233,7 +240,7 @@ export function LeadFormModal({ open, onClose }: Props) {
             {/* Summary */}
             <div className="flex flex-wrap justify-center gap-2 mb-8 max-w-md">
               {answers.filter(Boolean).map((a, i) => (
-                <span key={i} className="px-3 py-1 text-[10px] tracking-wide"
+                <span key={i} className="px-3 py-1 rounded-full text-[10px] tracking-wide"
                   style={{
                     backgroundColor: "rgba(13,130,57,0.07)",
                     border: "1px solid rgba(13,130,57,0.2)",
@@ -244,7 +251,7 @@ export function LeadFormModal({ open, onClose }: Props) {
               ))}
             </div>
             <button onClick={reset}
-              className="px-8 py-3 text-[11px] tracking-[0.14em] uppercase hover:bg-[#0B6E30] transition-all duration-200 hover:-translate-y-0.5"
+              className="px-8 py-3 rounded-full text-[11px] tracking-[0.14em] uppercase hover:bg-[#0B6E30] transition-all duration-200 hover:-translate-y-0.5"
               style={{ backgroundColor: "#0D8239", color: "#fff",
                 fontFamily: "'DM Sans', sans-serif", fontWeight: 600, boxShadow: "0 10px 24px rgba(13,130,57,0.3)" }}>
               Close
@@ -263,7 +270,7 @@ export function LeadFormModal({ open, onClose }: Props) {
               {step < QUESTIONS.length && answers.slice(0, step).filter(Boolean).length > 0 && (
                 <div className="flex flex-wrap gap-1.5 justify-end max-w-xs">
                   {answers.slice(0, step).filter(Boolean).map((a, i) => (
-                    <span key={i} className="px-2 py-0.5 text-[9.5px] tracking-wide truncate max-w-[120px]"
+                    <span key={i} className="px-2 py-0.5 rounded-full text-[9.5px] tracking-wide truncate max-w-[120px]"
                       style={{
                         backgroundColor: "rgba(13,130,57,0.07)",
                         border: "1px solid rgba(13,130,57,0.18)",
@@ -305,7 +312,7 @@ export function LeadFormModal({ open, onClose }: Props) {
                         <button
                           key={o.label}
                           onClick={() => setAnswer(o.label)}
-                          className="text-left p-3.5 transition-all duration-200 hover:-translate-y-0.5"
+                          className="text-left p-3.5 rounded-xl transition-all duration-200 hover:-translate-y-0.5"
                           style={{
                             border: selected ? "2px solid #0D8239" : "1.5px solid rgba(12,26,13,0.11)",
                             backgroundColor: selected ? "rgba(13,130,57,0.06)" : "#fafaf8",
@@ -339,7 +346,7 @@ export function LeadFormModal({ open, onClose }: Props) {
                   <div className="flex justify-between">
                     {step > 0 ? (
                       <button onClick={() => setStep(s => s - 1)}
-                        className="inline-flex items-center gap-2 px-6 py-2.5 text-[11px] tracking-[0.12em] uppercase transition-all duration-200 hover:-translate-y-0.5 hover:border-[#178B4C] hover:text-[#178B4C]"
+                        className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-[11px] tracking-[0.12em] uppercase transition-all duration-200 hover:-translate-y-0.5 hover:border-[#178B4C] hover:text-[#178B4C]"
                         style={{ border: "1.5px solid rgba(12,26,13,0.14)", color: "#5A6B5C",
                           fontFamily: "'DM Sans', sans-serif", fontWeight: 600 }}>
                         <ArrowLeft className="w-3.5 h-3.5" /> Back
@@ -348,7 +355,7 @@ export function LeadFormModal({ open, onClose }: Props) {
                     <button
                       disabled={!answers[step]}
                       onClick={() => setStep(s => s + 1)}
-                      className="inline-flex items-center gap-2 px-7 py-2.5 text-[11px] tracking-[0.12em] uppercase transition-all duration-200 disabled:opacity-30 enabled:hover:-translate-y-0.5"
+                      className="inline-flex items-center gap-2 px-7 py-2.5 rounded-full text-[11px] tracking-[0.12em] uppercase transition-all duration-200 disabled:opacity-30 enabled:hover:-translate-y-0.5"
                       style={{ backgroundColor: "#0D8239", color: "#fff",
                         fontFamily: "'DM Sans', sans-serif", fontWeight: 600, boxShadow: "0 8px 20px rgba(13,130,57,0.3)" }}>
                       Next <ArrowRight className="w-3.5 h-3.5" />
@@ -414,7 +421,7 @@ export function LeadFormModal({ open, onClose }: Props) {
                     <div className="flex gap-2">
                       <select value={form.dialCode}
                         onChange={e => setForm(f => ({ ...f, dialCode: e.target.value }))}
-                        className="px-2 py-2.5 outline-none focus:ring-1 focus:ring-[#0D8239] flex-shrink-0"
+                        className="px-2 py-2.5 rounded-lg outline-none focus:ring-2 focus:ring-[#0D8239]/40 flex-shrink-0"
                         style={{ ...inputStyle, width: "135px" }}>
                         {countryCodes.map(c => (
                           <option key={c.code} value={c.code}>{c.code} {c.country}</option>
@@ -441,13 +448,13 @@ export function LeadFormModal({ open, onClose }: Props) {
                   </div>
                   <div className="flex justify-between pt-1">
                     <button type="button" onClick={() => setStep(s => s - 1)}
-                      className="inline-flex items-center gap-2 px-6 py-2.5 text-[11px] tracking-[0.12em] uppercase transition-colors"
+                      className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-[11px] tracking-[0.12em] uppercase transition-all duration-200 hover:-translate-y-0.5 hover:border-[#178B4C] hover:text-[#178B4C]"
                       style={{ border: "1.5px solid rgba(12,26,13,0.14)", color: "#5A6B5C",
                         fontFamily: "'DM Sans', sans-serif", fontWeight: 600 }}>
                       <ArrowLeft className="w-3.5 h-3.5" /> Back
                     </button>
                     <button type="submit"
-                      className="inline-flex items-center gap-2 px-8 py-2.5 text-[11px] tracking-[0.12em] uppercase hover:bg-[#0B6E30] transition-all duration-200 hover:-translate-y-0.5"
+                      className="inline-flex items-center gap-2 px-8 py-2.5 rounded-full text-[11px] tracking-[0.12em] uppercase hover:bg-[#0B6E30] transition-all duration-200 hover:-translate-y-0.5"
                       style={{ backgroundColor: "#0D8239", color: "#fff",
                         fontFamily: "'DM Sans', sans-serif", fontWeight: 600, boxShadow: "0 8px 20px rgba(13,130,57,0.3)" }}>
                       Submit Request <ArrowRight className="w-3.5 h-3.5" />
@@ -458,7 +465,9 @@ export function LeadFormModal({ open, onClose }: Props) {
             )}
           </div>
         )}
-      </motion.div>
-    </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

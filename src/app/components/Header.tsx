@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 //import { Phone, Mail, Menu, X, ChevronDown } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import { motion, AnimatePresence } from "motion/react";
 import logo from "../../imports/image.png";
 import {
   Phone,
@@ -156,27 +157,35 @@ export function Header({ onOpenForm }: { onOpenForm?: () => void }) {
                   </button>
 
                   {/* ── Mega-menu ── */}
+                  <AnimatePresence>
                   {activeMenu === link.label && (
-                    <div
-  className="fixed left-0 right-0 z-50"
-  style={{
-    top: "100px", // increase to 105px or 110px if needed
-    backgroundColor: "#ffffff",
-    borderTop: "3px solid #178B4C",
-    borderBottom: "1px solid rgba(5,49,20,0.08)",
-    boxShadow: "0 24px 48px rgba(5,49,20,0.14)",
-  }}
->
-                      <div className="max-w-7xl mx-auto px-6 py-8">
+                    <motion.div
+                      initial={{ opacity: 0, y: -8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -8 }}
+                      transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                      className="fixed left-0 right-0 z-50"
+                      style={{
+                        top: "100px", // increase to 105px or 110px if needed
+                        background: "linear-gradient(180deg, #ffffff 0%, #FBFAF6 100%)",
+                        borderTop: "3px solid #178B4C",
+                        borderBottom: "1px solid rgba(5,49,20,0.08)",
+                        boxShadow: "0 32px 64px rgba(5,49,20,0.18)",
+                      }}
+                    >
+                      <div className="max-w-7xl mx-auto px-6 py-9">
                         <div className="grid grid-cols-[1.4fr_1fr] gap-10">
 
                           {/* Left — RN Machines grid */}
                           <div>
-                            <div className="text-[14px] tracking-[0.22em] uppercase mb-5"
-                              style={{ ...F, color: "#A0780E", fontFamily: "'DM Mono', monospace" }}>
-                              RN Machines
+                            <div className="flex items-center gap-2 mb-5">
+                              <span className="w-5 h-[2px]" style={{ backgroundColor: "#A0780E" }} />
+                              <span className="text-[13px] tracking-[0.22em] uppercase"
+                                style={{ ...F, color: "#A0780E", fontFamily: "'DM Mono', monospace" }}>
+                                RN Machines
+                              </span>
                             </div>
-                            <div className="grid grid-cols-2 gap-3">
+                            <div className="grid grid-cols-2 gap-3.5">
                               {[
                                 { label: "Composting & Digester", href: "/products/organic-waste-digester", img: img1, desc: "CE certified OWC units" },
                                 { label: "Shredders", href: "/products/shredders", img: img5, desc: "Industrial waste shredding" },
@@ -184,25 +193,18 @@ export function Header({ onOpenForm }: { onOpenForm?: () => void }) {
                                 { label: "Trommel Screen", href: "/products/trommel-screens", img: img6, desc: "Efficient waste sorting" },
                               ].map(item => (
                                 <Link key={item.href} to={item.href}
-                                  className="group flex items-center gap-3 p-3 transition-all duration-200 hover:bg-[#F5F4EF] hover:-translate-y-0.5"
-                                  style={{ border: "1px solid rgba(5,49,20,0.08)" }}>
-                                  <div className="w-18 h-18 flex-shrink-0 overflow-hidden" style={{ border: "1px solid rgba(23,139,76,0.2)" }}>
-                                    <img loading="lazy" decoding="async" src={item.img} alt={item.label} className="w-full h-full object-cover" />
+                                  className="group flex items-center gap-3.5 p-3.5 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_32px_rgba(23,139,76,0.16)] hover:border-[rgba(23,139,76,0.35)]"
+                                  style={{ border: "1px solid rgba(5,49,20,0.08)", backgroundColor: "#ffffff" }}>
+                                  <div className="w-16 h-16 flex-shrink-0 overflow-hidden rounded-lg" style={{ border: "1px solid rgba(23,139,76,0.18)" }}>
+                                    <img loading="lazy" decoding="async" src={item.img} alt={item.label} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                                   </div>
-                                  <div>
+                                  <div className="min-w-0">
                                     <div style={{ ...F, fontSize: "14px", color: "#053114", fontWeight: 600 }}>{item.label}</div>
-                                    <div
-  style={{
-    fontFamily: "'DM Sans', sans-serif",
-    fontSize: "12.5px",
-    color: "#5A6B5C",
-    marginTop: "4px",
-    lineHeight: "1.5",
-  }}
->
-  {item.desc}
-</div>                          </div>
-                                  <ArrowUpRight className="w-3.5 h-3.5 ml-auto opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" style={{ color: "#178B4C" }} />
+                                    <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12.5px", color: "#5A6B5C", marginTop: "4px", lineHeight: "1.5" }}>
+                                      {item.desc}
+                                    </div>
+                                  </div>
+                                  <ArrowUpRight className="w-3.5 h-3.5 ml-auto opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 flex-shrink-0" style={{ color: "#178B4C" }} />
                                 </Link>
                               ))}
                             </div>
@@ -210,41 +212,44 @@ export function Header({ onOpenForm }: { onOpenForm?: () => void }) {
 
                           {/* Right — Biogas + Solar as featured cards */}
                           <div>
-                            <div className="text-[14px] tracking-[0.22em] uppercase mb-5"
-                              style={{ ...F, color: "#A0780E", fontFamily: "'DM Mono', monospace" }}>
-                              Energy Solutions
+                            <div className="flex items-center gap-2 mb-5">
+                              <span className="w-5 h-[2px]" style={{ backgroundColor: "#A0780E" }} />
+                              <span className="text-[13px] tracking-[0.22em] uppercase"
+                                style={{ ...F, color: "#A0780E", fontFamily: "'DM Mono', monospace" }}>
+                                Energy Solutions
+                              </span>
                             </div>
-                            <div className="flex flex-col gap-3">
+                            <div className="flex flex-col gap-3.5">
                               {[
                                 { label: "RN Biogas", href: "/products/biogas", img: img2, desc: "Convert waste to renewable biogas — up to 90% GHG reduction.", tag: "Energy Recovery" },
                                 { label: "RN Solar", href: "/products/solar", img: img4, desc: "High-efficiency solar systems for residential and commercial use.", tag: "Clean Energy" },
                               ].map(item => (
                                 <Link key={item.href} to={item.href}
-                                 className="group relative overflow-hidden flex gap-4 p-4 transition-all duration-200 hover:bg-[#F5F4EF]"
-                                  style={{ border: "1px solid rgba(5,49,20,0.1)" }}>
-                                  <div className="w-20 h-16 flex-shrink-0 overflow-hidden">
-                                    <img loading="lazy" decoding="async" src={item.img} alt={item.label} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
-                                  </div>
-                                  <div className="flex-1 min-w-0">
-                                    <div className="flex items-center gap-2 mb-1">
-                                      <span style={{ ...F, fontSize: "14px", color: "#053114", fontWeight: 700 }} className="group-hover:text-white transition-colors">{item.label}</span>
-                                      <span className="px-1.5 py-0.5 text-[9px] tracking-[0.1em] uppercase"
-                                        style={{ backgroundColor: "rgba(23,139,76,0.1)", color: "#178B4C", fontFamily: "'DM Sans', sans-serif" }}>
+                                  className="group relative overflow-hidden rounded-xl flex-shrink-0 transition-all duration-300 hover:-translate-y-1"
+                                  style={{ height: "108px", boxShadow: "0 8px 22px rgba(5,49,20,0.12)" }}>
+                                  <img loading="lazy" decoding="async" src={item.img} alt={item.label}
+                                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                                  <div className="absolute inset-0" style={{ background: "linear-gradient(105deg, rgba(5,49,20,0.94) 30%, rgba(5,49,20,0.72) 58%, rgba(5,49,20,0.25) 100%)" }} />
+                                  <div className="relative h-full flex flex-col justify-center px-5">
+                                    <div className="flex items-center gap-2 mb-1.5">
+                                      <span style={{ ...F, fontSize: "14.5px", color: "#ffffff", fontWeight: 700 }}>{item.label}</span>
+                                      <span className="px-1.5 py-0.5 text-[9px] tracking-[0.1em] uppercase rounded-full"
+                                        style={{ backgroundColor: "rgba(217,182,92,0.22)", border: "1px solid rgba(217,182,92,0.5)", color: "#D9B65C", fontFamily: "'DM Sans', sans-serif" }}>
                                         {item.tag}
                                       </span>
                                     </div>
-                                    <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "#5A6B5C", lineHeight: 1.5 }} className="group-hover:text-white/70 transition-colors">
+                                    <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "rgba(255,255,255,0.75)", lineHeight: 1.5, maxWidth: "230px" }}>
                                       {item.desc}
                                     </p>
                                   </div>
-                                  <ArrowUpRight className="w-4 h-4 flex-shrink-0 self-center opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: "#A0780E" }} />
+                                  <ArrowUpRight className="absolute top-3.5 right-3.5 w-4 h-4 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" style={{ color: "#D9B65C" }} />
                                 </Link>
                               ))}
                             </div>
 
                             {/* Bottom CTA strip */}
-                            <div className="mt-4 flex items-center justify-between px-4 py-3"
-                              style={{ backgroundColor: "#F5F4EF", border: "1px solid rgba(5,49,20,0.06)" }}>
+                            <div className="mt-3.5 flex items-center justify-between px-4 py-3 rounded-xl"
+                              style={{ background: "linear-gradient(135deg, rgba(23,139,76,0.07), rgba(217,182,92,0.09))", border: "1px solid rgba(5,49,20,0.07)" }}>
                               <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", color: "#5A6B5C" }}>
                                 Need help choosing?
                               </span>
@@ -259,8 +264,9 @@ export function Header({ onOpenForm }: { onOpenForm?: () => void }) {
 
                         </div>
                       </div>
-                    </div>
+                    </motion.div>
                   )}
+                  </AnimatePresence>
                 </div>
               ) : (
                 <Link key={link.href} to={link.href!}
