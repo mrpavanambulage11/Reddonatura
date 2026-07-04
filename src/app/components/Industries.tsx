@@ -157,6 +157,8 @@ export function Industries() {
           >
             {/* Background image */}
             <ImageWithFallback
+              loading="lazy"
+              decoding="async"
               src={industry.image}
               alt={industry.name.replace("\n", " ")}
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"

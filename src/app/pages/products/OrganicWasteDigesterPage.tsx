@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
-import { PageLayout, Section, SectionLabel, FeatureCard, SpecsTable, FAQAccordion, PageCTA, Testimonials, MachineGallery } from "../PageLayout";
+import { PageLayout, Section, SectionLabel, FeatureCard, SpecsTable, FAQAccordion, PageCTA, Testimonials, MachineGallery, usePageMeta, useStructuredData, breadcrumbSchema, productSchema, faqSchema } from "../PageLayout";
 import { Zap, Settings, Leaf, CheckCircle2 } from "lucide-react";
-import img1 from "../../../imports/image-1.png";
+import img1 from "../../../imports/image-1.webp";
 
 const features = [
   { icon: <Zap className="w-5 h-5" />, title: "Rapid Transformation Technology", desc: "Our cutting-edge system ensures swift conversion of organic waste into high-quality outputs, significantly reducing waste volume and accelerating the composting process." },
@@ -44,6 +44,17 @@ const faqs = [
 ];
 
 export function OrganicWasteDigesterPage() {
+  usePageMeta(
+    "Organic Waste Converter & Digester | Reddonatura",
+    "CE-certified rNature organic waste converters turn food and organic waste into nutrient-rich compost in 24 hours. Capacities from 25 kg/day to 1250 kg/day.",
+    "/products/organic-waste-digester"
+  );
+  useStructuredData([
+    productSchema({ name: "rNature Organic Waste Converter & Digester", description: "CE-certified, fully automatic machines that transform organic waste into nutrient-rich compost within 24 hours, capacities 25–1250 kg/day.", path: "/products/organic-waste-digester" }),
+    faqSchema(faqs),
+    breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Products", path: "/products/organic-waste-digester" }, { name: "Organic Waste Converter & Digester", path: "/products/organic-waste-digester" }]),
+  ]);
+
   return (
     <PageLayout
       title="Organic Waste Converter & Digester"
@@ -71,7 +82,7 @@ export function OrganicWasteDigesterPage() {
           </motion.div>
           <motion.div initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}>
             <div style={{ border: "2px solid #178B4C", overflow: "hidden", boxShadow: "0 20px 45px rgba(5,49,20,0.15)" }}>
-              <img src={img1} alt="rNature Organic Waste Digester" className="w-full" style={{ maxHeight: "380px", objectFit: "cover" }} />
+              <img loading="lazy" decoding="async" src={img1} alt="rNature Organic Waste Digester" className="w-full" style={{ maxHeight: "380px", objectFit: "cover" }} />
             </div>
           </motion.div>
         </div>

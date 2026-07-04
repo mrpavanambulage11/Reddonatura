@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { PageLayout, Section, SectionLabel, FAQAccordion, PageCTA, usePageMeta } from "./PageLayout";
+import { PageLayout, Section, SectionLabel, FAQAccordion, PageCTA, usePageMeta, useStructuredData, breadcrumbSchema } from "./PageLayout";
 
 const faqs = [
   {
@@ -47,13 +46,12 @@ const faqs = [
 export function FAQPage() {
   usePageMeta(
     "FAQs | Reddonatura — Organic Waste Converters, Composting & Biogas",
-    "Answers to common questions about organic waste converters, composting, biogas plants, CE certification, installation, and after-sales support from Reddonatura."
+    "Answers to common questions about organic waste converters, composting, biogas plants, CE certification, installation, and after-sales support from Reddonatura.",
+    "/faqs"
   );
 
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.type = "application/ld+json";
-    script.text = JSON.stringify({
+  useStructuredData([
+    {
       "@context": "https://schema.org",
       "@type": "FAQPage",
       mainEntity: faqs.map((f) => ({
@@ -61,10 +59,9 @@ export function FAQPage() {
         name: f.q,
         acceptedAnswer: { "@type": "Answer", text: f.a },
       })),
-    });
-    document.head.appendChild(script);
-    return () => { document.head.removeChild(script); };
-  }, []);
+    },
+    breadcrumbSchema([{ name: "Home", path: "/" }, { name: "FAQs", path: "/faqs" }]),
+  ]);
 
   return (
     <PageLayout

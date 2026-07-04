@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { PageLayout, Section, SectionLabel, FeatureCard, PageCTA, Testimonials, AnimatedNumber } from "../PageLayout";
+import { PageLayout, Section, SectionLabel, FeatureCard, PageCTA, Testimonials, AnimatedNumber, usePageMeta, useStructuredData, breadcrumbSchema, productSchema } from "../PageLayout";
 import { CheckCircle2, Layers, Truck, Cpu, Recycle } from "lucide-react";
 
 const process = [
@@ -25,6 +25,16 @@ const outcomes = [
 ];
 
 export function BiominingPage() {
+  usePageMeta(
+    "Biomining Solutions | Reddonatura",
+    "Scientific legacy landfill excavation, segregation, and resource recovery — reducing landfill volume by up to 95% while recovering compost, RDF, and inert materials.",
+    "/products/biomining"
+  );
+  useStructuredData([
+    productSchema({ name: "Biomining & Legacy Landfill Remediation", description: "Scientific excavation, segregation, and resource recovery from legacy landfill waste, reducing landfill volume by up to 95%.", path: "/products/biomining" }),
+    breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Products", path: "/products/biomining" }, { name: "Biomining", path: "/products/biomining" }]),
+  ]);
+
   return (
     <PageLayout
       title="Bio Mining Solutions"
@@ -53,7 +63,7 @@ export function BiominingPage() {
           </motion.div>
           <motion.div initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}>
             <div style={{ border: "2px solid #178B4C", overflow: "hidden", boxShadow: "0 20px 45px rgba(5,49,20,0.15)" }}>
-              <img src="https://images.unsplash.com/photo-1604187351574-c75ca79f5807?w=800&h=600&fit=crop&auto=format" alt="Biomining — landfill processing" className="w-full" style={{ maxHeight: "420px", objectFit: "cover" }} />
+              <img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1604187351574-c75ca79f5807?w=800&h=600&fit=crop&auto=format" alt="Biomining — landfill processing" className="w-full" style={{ maxHeight: "420px", objectFit: "cover" }} />
             </div>
           </motion.div>
         </div>

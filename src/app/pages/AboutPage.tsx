@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { PageLayout, Section, SectionLabel, FeatureCard, PageCTA, AnimatedNumber } from "./PageLayout";
+import { PageLayout, Section, SectionLabel, FeatureCard, PageCTA, AnimatedNumber, usePageMeta, useStructuredData, breadcrumbSchema } from "./PageLayout";
 import { Award, Leaf, Users, Globe } from "lucide-react";
 import aboutImg from "../../imports/WhatsApp_Image_2026-06-22_at_5.48.15_PM.jpeg";
 
@@ -19,6 +19,13 @@ const values = [
 ];
 
 export function AboutPage() {
+  usePageMeta(
+    "About Us | Reddonatura — Garbage to Green Since 2013",
+    "Reddonatura is a CE-certified global leader in organic waste management, founded in 2013, serving 7,000+ clients across 20+ countries with the Garbage to Green mission.",
+    "/about"
+  );
+  useStructuredData(breadcrumbSchema([{ name: "Home", path: "/" }, { name: "About Us", path: "/about" }]));
+
   return (
     <PageLayout
       title="About Reddonatura"
@@ -41,7 +48,7 @@ export function AboutPage() {
           </motion.div>
           <motion.div initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }} className="relative">
             <div style={{ border: "2px solid #178B4C", overflow: "hidden", boxShadow: "0 30px 60px rgba(5,49,20,0.18)" }}>
-              <img src={aboutImg} alt="Reddonatura G2G facility" className="w-full" style={{ maxHeight: "420px", objectFit: "cover" }} />
+              <img loading="lazy" decoding="async" src={aboutImg} alt="Reddonatura G2G facility" className="w-full" style={{ maxHeight: "420px", objectFit: "cover" }} />
             </div>
             <div className="absolute -bottom-5 -right-5 px-6 py-5" style={{ backgroundColor: "#A0780E", boxShadow: "0 16px 32px rgba(160,120,14,0.35)" }}>
               <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: "2rem", color: "#fff", lineHeight: 1 }}><AnimatedNumber value="300+" /></div>

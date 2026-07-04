@@ -198,6 +198,8 @@ export function About() {
             {/* Main image */}
             <div className="relative overflow-hidden w-full" style={{ aspectRatio: "4/3", boxShadow: "0 30px 60px rgba(5,49,20,0.18)" }}>
               <ImageWithFallback
+                loading="lazy"
+                decoding="async"
                 src={aboutImg}
                 alt="Reddonatura G2G facility — Garbage to Green"
                 className="w-full h-full object-cover object-center"
@@ -249,6 +251,8 @@ export function About() {
               style={{ width: "140px", height: "140px" }}
             >
               <ImageWithFallback
+                loading="lazy"
+                decoding="async"
                 src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=300&h=300&fit=crop&auto=format"
                 alt="Solar energy"
                 className="w-full h-full object-cover"

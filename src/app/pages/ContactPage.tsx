@@ -1,6 +1,7 @@
+import { useState } from "react";
 import { motion } from "motion/react";
-import { PageLayout, Section, SectionLabel } from "./PageLayout";
-import { Phone, Mail, MapPin, Clock } from "lucide-react";
+import { PageLayout, Section, SectionLabel, usePageMeta, useStructuredData, breadcrumbSchema } from "./PageLayout";
+import { Phone, Mail, MapPin, Clock, CheckCircle2 } from "lucide-react";
 
 const contacts = [
   { icon: <Phone className="w-5 h-5" />, label: "Phone", values: ["+91 77609 87934", "+91 73384 62806"] },
@@ -10,6 +11,52 @@ const contacts = [
 ];
 
 export function ContactPage() {
+  usePageMeta(
+    "Contact Us | Reddonatura",
+    "Get in touch with Reddonatura for organic waste converters, biogas, dewatering, and solar solutions. Call +91 77609 87934, email info@reddonatura.com, or visit our Bengaluru office.",
+    "/contact"
+  );
+  useStructuredData([
+    breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Contact Us", path: "/contact" }]),
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      name: "Reddonatura India Private Limited",
+      image: "https://reddonatura.vercel.app/icon-512.png",
+      telephone: "+91-77609-87934",
+      email: "info@reddonatura.com",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "Sy. No 41/1, Veerenahalli Village, Virgonagar Industrial Estate, Bidarahalli Hobli, beside Cipla Factory, Virgonagar, J.I.Veerenahalli",
+        addressLocality: "Bengaluru",
+        addressRegion: "Karnataka",
+        postalCode: "560049",
+        addressCountry: "IN",
+      },
+      openingHours: "Mo-Sa 09:00-18:00",
+      url: "https://reddonatura.vercel.app/contact",
+    },
+  ]);
+
+  const [form, setForm] = useState({ name: "", company: "", email: "", phone: "", message: "" });
+  const [sent, setSent] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const lines = [
+      "🌿 *New Enquiry — Reddonatura Website*",
+      "",
+      `*Name:* ${form.name}`,
+      `*Company:* ${form.company || "—"}`,
+      `*Email:* ${form.email}`,
+      `*Phone:* ${form.phone}`,
+      "",
+      `*Message:* ${form.message || "—"}`,
+    ];
+    window.open(`https://wa.me/917760987934?text=${encodeURIComponent(lines.join("\n"))}`, "_blank");
+    setSent(true);
+  };
+
   return (
     <PageLayout
       title="Contact Us"
@@ -45,28 +92,49 @@ export function ContactPage() {
           <motion.div initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}>
             <div className="p-8" style={{ border: "1px solid rgba(23,139,76,0.15)", backgroundColor: "#ffffff" }}>
               <h3 className="mb-6" style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: "1.4rem", color: "#053114" }}>Send us a Message</h3>
-              <form className="space-y-4">
+              {sent ? (
+                <div className="flex flex-col items-center text-center py-10">
+                  <div className="w-14 h-14 rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: "rgba(23,139,76,0.1)" }}>
+                    <CheckCircle2 className="w-7 h-7" style={{ color: "#178B4C" }} />
+                  </div>
+                  <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 400, fontSize: "0.95rem", color: "#053114" }}>
+                    Thanks, {form.name.split(" ")[0] || "there"}! We've opened WhatsApp with your message — send it across and our team will respond shortly.
+                  </p>
+                  <button onClick={() => { setSent(false); setForm({ name: "", company: "", email: "", phone: "", message: "" }); }}
+                    className="mt-6 px-6 py-2.5 rounded-full text-[11px] tracking-[0.12em] uppercase transition-all duration-200 hover:-translate-y-0.5"
+                    style={{ backgroundColor: "rgba(23,139,76,0.08)", border: "1px solid rgba(23,139,76,0.2)", fontFamily: "'DM Sans', sans-serif", fontWeight: 600, color: "#178B4C" }}>
+                    Send Another
+                  </button>
+                </div>
+              ) : (
+              <form className="space-y-4" onSubmit={handleSubmit}>
                 <div className="grid sm:grid-cols-2 gap-4">
-                  {["Full Name", "Company"].map(label => (
-                    <div key={label}>
-                      <label style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "10.5px", fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase", color: "#5A6B5C", display: "block", marginBottom: "6px" }}>{label}</label>
-                      <input type="text" placeholder={label} className="w-full px-4 py-2.5 outline-none focus:ring-1 focus:ring-[#178B4C] transition-all"
-                        style={{ border: "1px solid rgba(5,49,20,0.12)", fontFamily: "'DM Sans', sans-serif", fontSize: "0.9rem", color: "#053114" }} />
-                    </div>
-                  ))}
+                  <div>
+                    <label style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "10.5px", fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase", color: "#5A6B5C", display: "block", marginBottom: "6px" }}>Full Name</label>
+                    <input required type="text" placeholder="Full Name" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} className="w-full px-4 py-2.5 outline-none focus:ring-1 focus:ring-[#178B4C] transition-all"
+                      style={{ border: "1px solid rgba(5,49,20,0.12)", fontFamily: "'DM Sans', sans-serif", fontSize: "0.9rem", color: "#053114" }} />
+                  </div>
+                  <div>
+                    <label style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "10.5px", fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase", color: "#5A6B5C", display: "block", marginBottom: "6px" }}>Company</label>
+                    <input type="text" placeholder="Company" value={form.company} onChange={e => setForm(f => ({ ...f, company: e.target.value }))} className="w-full px-4 py-2.5 outline-none focus:ring-1 focus:ring-[#178B4C] transition-all"
+                      style={{ border: "1px solid rgba(5,49,20,0.12)", fontFamily: "'DM Sans', sans-serif", fontSize: "0.9rem", color: "#053114" }} />
+                  </div>
                 </div>
                 <div className="grid sm:grid-cols-2 gap-4">
-                  {["Email", "Phone"].map(label => (
-                    <div key={label}>
-                      <label style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "10.5px", fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase", color: "#5A6B5C", display: "block", marginBottom: "6px" }}>{label}</label>
-                      <input type={label === "Email" ? "email" : "tel"} placeholder={label} className="w-full px-4 py-2.5 outline-none focus:ring-1 focus:ring-[#178B4C] transition-all"
-                        style={{ border: "1px solid rgba(5,49,20,0.12)", fontFamily: "'DM Sans', sans-serif", fontSize: "0.9rem", color: "#053114" }} />
-                    </div>
-                  ))}
+                  <div>
+                    <label style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "10.5px", fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase", color: "#5A6B5C", display: "block", marginBottom: "6px" }}>Email</label>
+                    <input required type="email" placeholder="Email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} className="w-full px-4 py-2.5 outline-none focus:ring-1 focus:ring-[#178B4C] transition-all"
+                      style={{ border: "1px solid rgba(5,49,20,0.12)", fontFamily: "'DM Sans', sans-serif", fontSize: "0.9rem", color: "#053114" }} />
+                  </div>
+                  <div>
+                    <label style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "10.5px", fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase", color: "#5A6B5C", display: "block", marginBottom: "6px" }}>Phone</label>
+                    <input required type="tel" placeholder="Phone" value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} className="w-full px-4 py-2.5 outline-none focus:ring-1 focus:ring-[#178B4C] transition-all"
+                      style={{ border: "1px solid rgba(5,49,20,0.12)", fontFamily: "'DM Sans', sans-serif", fontSize: "0.9rem", color: "#053114" }} />
+                  </div>
                 </div>
                 <div>
                   <label style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "10.5px", fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase", color: "#5A6B5C", display: "block", marginBottom: "6px" }}>Message</label>
-                  <textarea rows={5} placeholder="Tell us about your requirements..." className="w-full px-4 py-2.5 outline-none focus:ring-1 focus:ring-[#178B4C] transition-all resize-none"
+                  <textarea rows={5} placeholder="Tell us about your requirements..." value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))} className="w-full px-4 py-2.5 outline-none focus:ring-1 focus:ring-[#178B4C] transition-all resize-none"
                     style={{ border: "1px solid rgba(5,49,20,0.12)", fontFamily: "'DM Sans', sans-serif", fontSize: "0.9rem", color: "#053114" }} />
                 </div>
                 <button type="submit" className="w-full py-3 text-[11.5px] tracking-[0.14em] uppercase transition-all duration-200 hover:-translate-y-0.5"
@@ -74,6 +142,7 @@ export function ContactPage() {
                   Send Message
                 </button>
               </form>
+              )}
             </div>
           </motion.div>
         </div>

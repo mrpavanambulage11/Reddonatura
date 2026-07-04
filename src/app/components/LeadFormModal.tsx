@@ -204,7 +204,7 @@ export function LeadFormModal({ open, onClose }: Props) {
         {/* Close button */}
         <button
           onClick={reset}
-          className="absolute top-3 right-3 z-10 w-8 h-8 flex items-center justify-center rounded-full transition-colors hover:bg-black/5"
+          className="absolute top-2 right-2 z-10 w-11 h-11 flex items-center justify-center rounded-full transition-colors hover:bg-black/5 active:bg-black/10"
           style={{ color: "#0C1A0D" }}
           aria-label="Close"
         >

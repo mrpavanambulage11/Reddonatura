@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import { usePageMeta } from "./PageLayout";
+import { usePageMeta, useNoIndex } from "./PageLayout";
 
 export function NotFoundPage() {
   usePageMeta(
     "Page Not Found | Reddonatura",
     "The page you're looking for doesn't exist. Explore Reddonatura's organic waste converters, biogas, and solar solutions."
   );
+  useNoIndex();
 
   return (
     <div

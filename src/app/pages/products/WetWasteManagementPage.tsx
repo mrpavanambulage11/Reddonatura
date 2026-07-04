@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { motion } from "motion/react";
-import { PageLayout, Section, PageCTA, Testimonials } from "../PageLayout";
+import { PageLayout, Section, PageCTA, Testimonials, usePageMeta, useStructuredData, breadcrumbSchema, productSchema } from "../PageLayout";
 import { CheckCircle2 } from "lucide-react";
-import img1 from "../../../imports/image-1.png";
-import img3 from "../../../imports/image-3.png";
-import img5 from "../../../imports/image-5.png";
+import img1 from "../../../imports/image-1.webp";
+import img3 from "../../../imports/image-3.webp";
+import img5 from "../../../imports/image-5.webp";
 
 /* ── Composting Machine types ─────────────────────────── */
 const composingSubTabs = [
@@ -133,7 +133,7 @@ function CompositingMachinesTab() {
             <SpecTable rows={current.specs} />
           </div>
           <div style={{ border: "2px solid #178B4C", overflow: "hidden", boxShadow: "0 20px 45px rgba(5,49,20,0.15)" }}>
-            <img src={current.image} alt={current.title} className="w-full object-cover" style={{ maxHeight: "360px", objectFit: "cover" }} />
+            <img loading="lazy" decoding="async" src={current.image} alt={current.title} className="w-full object-cover" style={{ maxHeight: "360px", objectFit: "cover" }} />
           </div>
         </div>
       </motion.div>
@@ -160,7 +160,7 @@ function BinFilterTab() {
         ))}
       </div>
       <div style={{ border: "2px solid #178B4C", overflow: "hidden", boxShadow: "0 20px 45px rgba(5,49,20,0.15)" }}>
-        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&h=500&fit=crop&auto=format" alt="Bin Filter System" className="w-full" style={{ maxHeight: "360px", objectFit: "cover" }} />
+        <img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&h=500&fit=crop&auto=format" alt="Bin Filter System" className="w-full" style={{ maxHeight: "360px", objectFit: "cover" }} />
       </div>
     </div>
   );
@@ -189,7 +189,7 @@ function DewateringTab() {
         </div>
       </div>
       <div style={{ border: "2px solid #178B4C", overflow: "hidden", boxShadow: "0 20px 45px rgba(5,49,20,0.15)" }}>
-        <img src={img3} alt="De-Watering System" className="w-full" style={{ maxHeight: "360px", objectFit: "cover" }} />
+        <img loading="lazy" decoding="async" src={img3} alt="De-Watering System" className="w-full" style={{ maxHeight: "360px", objectFit: "cover" }} />
       </div>
     </div>
   );
@@ -214,7 +214,7 @@ function BioFilterTab() {
         ))}
       </div>
       <div style={{ border: "2px solid #178B4C", overflow: "hidden", boxShadow: "0 20px 45px rgba(5,49,20,0.15)" }}>
-        <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=700&h=500&fit=crop&auto=format" alt="Bio-Filter" className="w-full" style={{ maxHeight: "360px", objectFit: "cover" }} />
+        <img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=700&h=500&fit=crop&auto=format" alt="Bio-Filter" className="w-full" style={{ maxHeight: "360px", objectFit: "cover" }} />
       </div>
     </div>
   );
@@ -239,7 +239,7 @@ function ShreddersTab() {
         ))}
       </div>
       <div style={{ border: "2px solid #178B4C", overflow: "hidden", boxShadow: "0 20px 45px rgba(5,49,20,0.15)" }}>
-        <img src={img5} alt="Industrial Shredder" className="w-full" style={{ maxHeight: "360px", objectFit: "cover" }} />
+        <img loading="lazy" decoding="async" src={img5} alt="Industrial Shredder" className="w-full" style={{ maxHeight: "360px", objectFit: "cover" }} />
       </div>
     </div>
   );
@@ -255,6 +255,16 @@ const tabContent: Record<string, JSX.Element> = {
 
 export function WetWasteManagementPage() {
   const [activeTab, setActiveTab] = useState("composting");
+
+  usePageMeta(
+    "Wet Waste Management Solutions | Reddonatura",
+    "End-to-end wet waste management — automatic and semi-automatic composting machines, shredding, dewatering, bio-filtration, and odour control systems.",
+    "/products/wet-waste"
+  );
+  useStructuredData([
+    productSchema({ name: "Wet Waste Management System", description: "Complete organic waste solutions covering collection, shredding, composting, dewatering, bio-filtration, and odour control.", path: "/products/wet-waste" }),
+    breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Products", path: "/products/wet-waste" }, { name: "Wet Waste Management", path: "/products/wet-waste" }]),
+  ]);
 
   return (
     <PageLayout

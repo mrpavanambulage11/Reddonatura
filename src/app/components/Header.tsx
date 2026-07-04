@@ -10,12 +10,12 @@ import {
   ChevronDown,
   ArrowUpRight,
 } from "lucide-react";
-import img1 from "../../imports/image-1.png";
-import img2 from "../../imports/image-2.png";
-import img3 from "../../imports/image-3.png";
-import img4 from "../../imports/image-4.png";
-import img5 from "../../imports/image-5.png";
-import img6 from "../../imports/image-6.png";
+import img1 from "../../imports/image-1.webp";
+import img2 from "../../imports/image-2.webp";
+import img3 from "../../imports/image-3.webp";
+import img4 from "../../imports/image-4.webp";
+import img5 from "../../imports/image-5.webp";
+import img6 from "../../imports/image-6.webp";
 
 const machines = [
   { label: "Composting & Digester", href: "/products/organic-waste-digester" },
@@ -187,7 +187,7 @@ export function Header({ onOpenForm }: { onOpenForm?: () => void }) {
                                   className="group flex items-center gap-3 p-3 transition-all duration-200 hover:bg-[#F5F4EF] hover:-translate-y-0.5"
                                   style={{ border: "1px solid rgba(5,49,20,0.08)" }}>
                                   <div className="w-18 h-18 flex-shrink-0 overflow-hidden" style={{ border: "1px solid rgba(23,139,76,0.2)" }}>
-                                    <img src={item.img} alt={item.label} className="w-full h-full object-cover" />
+                                    <img loading="lazy" decoding="async" src={item.img} alt={item.label} className="w-full h-full object-cover" />
                                   </div>
                                   <div>
                                     <div style={{ ...F, fontSize: "14px", color: "#053114", fontWeight: 600 }}>{item.label}</div>
@@ -223,7 +223,7 @@ export function Header({ onOpenForm }: { onOpenForm?: () => void }) {
                                  className="group relative overflow-hidden flex gap-4 p-4 transition-all duration-200 hover:bg-[#F5F4EF]"
                                   style={{ border: "1px solid rgba(5,49,20,0.1)" }}>
                                   <div className="w-20 h-16 flex-shrink-0 overflow-hidden">
-                                    <img src={item.img} alt={item.label} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
+                                    <img loading="lazy" decoding="async" src={item.img} alt={item.label} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
                                   </div>
                                   <div className="flex-1 min-w-0">
                                     <div className="flex items-center gap-2 mb-1">
@@ -286,7 +286,7 @@ export function Header({ onOpenForm }: { onOpenForm?: () => void }) {
               Get a Quote
             </button>
             <button
-              className="lg:hidden p-2 transition-colors"
+              className="lg:hidden flex items-center justify-center w-11 h-11 -mr-1.5 rounded-full transition-colors active:bg-[rgba(23,139,76,0.08)]"
               style={{ color: "#053114" }}
               onClick={() => setMobileOpen(o => !o)}
               aria-label="Menu">

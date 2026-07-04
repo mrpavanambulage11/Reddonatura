@@ -62,7 +62,8 @@ const sections = [
 export function TermsPage() {
   usePageMeta(
     "Terms & Conditions | Reddonatura — Organic Waste Management Solutions",
-    "Read the Terms and Conditions governing the use of Reddonatura's website and the purchase of our organic waste converters, biogas, dewatering, and solar solutions."
+    "Read the Terms and Conditions governing the use of Reddonatura's website and the purchase of our organic waste converters, biogas, dewatering, and solar solutions.",
+    "/terms-and-conditions"
   );
 
   return (

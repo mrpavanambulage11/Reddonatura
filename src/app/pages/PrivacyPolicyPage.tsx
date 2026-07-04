@@ -70,7 +70,8 @@ const sections = [
 export function PrivacyPolicyPage() {
   usePageMeta(
     "Privacy Policy | Reddonatura — Organic Waste Management Solutions",
-    "Read Reddonatura's Privacy Policy to understand how we collect, use, and protect your information when you request a quote for our organic waste converters, biogas, and solar solutions."
+    "Read Reddonatura's Privacy Policy to understand how we collect, use, and protect your information when you request a quote for our organic waste converters, biogas, and solar solutions.",
+    "/privacy-policy"
   );
 
   return (

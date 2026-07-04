@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "motion/react";
-import { PageLayout, Section, SectionLabel, FeatureCard, SpecsTable, FAQAccordion, PageCTA, Testimonials, MachineGallery, AnimatedNumber } from "../PageLayout";
+import { PageLayout, Section, SectionLabel, FeatureCard, SpecsTable, FAQAccordion, PageCTA, Testimonials, MachineGallery, AnimatedNumber, usePageMeta, useStructuredData, breadcrumbSchema, productSchema, faqSchema } from "../PageLayout";
 import { Zap, Settings, Leaf, BarChart3, CheckCircle2, Play } from "lucide-react";
 
 /* ── Biogas type tabs ─────────────────────────────── */
@@ -81,6 +81,17 @@ export function BiogasPage() {
   const [activeType, setActiveType] = useState("containerized");
   const current = biogasTypes.find(t => t.id === activeType)!;
 
+  usePageMeta(
+    "RN Biogas Plants | Reddonatura",
+    "Containerized, fixed dome, geo-membrane, and floating drum biogas plants converting organic waste into renewable energy — up to 90% greenhouse gas reduction.",
+    "/products/biogas"
+  );
+  useStructuredData([
+    productSchema({ name: "RN Biogas Plant", description: "Containerized, fixed dome, geo-membrane, and floating drum biogas systems converting organic waste into renewable energy.", path: "/products/biogas" }),
+    faqSchema(faqs),
+    breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Products", path: "/products/biogas" }, { name: "RN Biogas", path: "/products/biogas" }]),
+  ]);
+
   return (
     <PageLayout
       title="RN Biogas Solutions"
@@ -106,7 +117,7 @@ export function BiogasPage() {
           </motion.div>
           <motion.div initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}>
             <div style={{ border: "2px solid #178B4C", overflow: "hidden", boxShadow: "0 20px 45px rgba(5,49,20,0.15)" }}>
-              <img src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=400&h=400&fit=crop&auto=format" alt="RN Biogas Plant" className="w-full" style={{ maxHeight: "400px", objectFit: "cover" }} />
+              <img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=400&h=400&fit=crop&auto=format" alt="RN Biogas Plant" className="w-full" style={{ maxHeight: "400px", objectFit: "cover" }} />
             </div>
           </motion.div>
         </div>
@@ -159,7 +170,7 @@ export function BiogasPage() {
                 </div>
               </div>
               <div style={{ border: "2px solid #178B4C", overflow: "hidden", boxShadow: "0 20px 45px rgba(5,49,20,0.15)" }}>
-                <img src={current.image} alt={current.title} className="w-full" style={{ maxHeight: "360px", objectFit: "cover" }} />
+                <img loading="lazy" decoding="async" src={current.image} alt={current.title} className="w-full" style={{ maxHeight: "360px", objectFit: "cover" }} />
               </div>
             </div>
           </motion.div>
@@ -207,7 +218,7 @@ export function BiogasPage() {
           ].map((v, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.1 * i }}
               className="group relative overflow-hidden cursor-pointer" style={{ border: "1px solid rgba(23,139,76,0.15)" }}>
-              <img src={v.thumb} alt={v.title} className="w-full object-cover transition-transform duration-500 group-hover:scale-105" style={{ height: "200px", objectFit: "cover" }} />
+              <img loading="lazy" decoding="async" src={v.thumb} alt={v.title} className="w-full object-cover transition-transform duration-500 group-hover:scale-105" style={{ height: "200px", objectFit: "cover" }} />
               <div className="absolute inset-0 flex items-center justify-center" style={{ backgroundColor: "rgba(5,49,20,0.45)" }}>
                 <div className="w-14 h-14 rounded-full flex items-center justify-center transition-transform duration-200 group-hover:scale-110"
                   style={{ backgroundColor: "#178B4C" }}>

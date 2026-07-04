@@ -57,7 +57,7 @@ export function Footer() {
           {/* Brand column */}
           <div>
             <div className="inline-block mb-6 px-3 py-1.5 bg-white">
-              <img
+              <img loading="lazy" decoding="async"
                 src={logo}
                 alt="Reddonatura"
                 className="h-5 object-contain"

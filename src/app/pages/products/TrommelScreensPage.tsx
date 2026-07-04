@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
-import { PageLayout, Section, SectionLabel, FeatureCard, SpecsTable, PageCTA, Testimonials, MachineGallery } from "../PageLayout";
+import { PageLayout, Section, SectionLabel, FeatureCard, SpecsTable, PageCTA, Testimonials, MachineGallery, usePageMeta, useStructuredData, breadcrumbSchema, productSchema } from "../PageLayout";
 import { Settings, Filter, CheckCircle2 } from "lucide-react";
-import img6 from "../../../imports/image-6.png";
+import img6 from "../../../imports/image-6.webp";
 
 const features = [
   { icon: <Filter className="w-5 h-5" />, title: "Modular Design", desc: "Flexible and customizable configurations to suit specific tasks and waste types, with optional cleaning systems such as brushes or drum scrapers." },
@@ -31,6 +31,16 @@ const specs = {
 };
 
 export function TrommelScreensPage() {
+  usePageMeta(
+    "Trommel Screens | Reddonatura",
+    "Rotary trommel screens deliver efficient waste sorting and separation for landfill sites, MBT plants, and recycling facilities.",
+    "/products/trommel-screens"
+  );
+  useStructuredData([
+    productSchema({ name: "Trommel Screen", description: "Rotary screening systems for waste sorting and separation at landfill, MBT, and recycling sites.", path: "/products/trommel-screens" }),
+    breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Products", path: "/products/trommel-screens" }, { name: "Trommel Screens", path: "/products/trommel-screens" }]),
+  ]);
+
   return (
     <PageLayout
       title="Trommel Screens"
@@ -50,7 +60,7 @@ export function TrommelScreensPage() {
           </motion.div>
           <motion.div initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}>
             <div style={{ border: "2px solid #178B4C", overflow: "hidden", boxShadow: "0 20px 45px rgba(5,49,20,0.15)" }}>
-              <img src={img6} alt="Trommel Screen" className="w-full" style={{ maxHeight: "380px", objectFit: "cover" }} />
+              <img loading="lazy" decoding="async" src={img6} alt="Trommel Screen" className="w-full" style={{ maxHeight: "380px", objectFit: "cover" }} />
             </div>
           </motion.div>
         </div>

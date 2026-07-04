@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { PageLayout, Section, SectionLabel, FeatureCard, PageCTA } from "./PageLayout";
+import { PageLayout, Section, SectionLabel, FeatureCard, PageCTA, usePageMeta, useStructuredData, breadcrumbSchema } from "./PageLayout";
 import { CheckCircle2, Zap, Wrench, BarChart3, Clock, ShieldCheck, ArrowRight } from "lucide-react";
 import teamImg from "../../imports/WhatsApp_Image_2026-06-22_at_5.48.15_PM.jpeg";
 
@@ -19,6 +19,13 @@ const packages = [
 ];
 
 export function ServicePage() {
+  usePageMeta(
+    "Installation & Maintenance Services | Reddonatura",
+    "Tiered Basic, Standard, and Premium maintenance packages with inspections, remote diagnostics, express spare parts, and 24/7 dedicated support for Reddonatura waste management equipment.",
+    "/service"
+  );
+  useStructuredData(breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Service", path: "/service" }]));
+
   return (
     <PageLayout
       title="Our Services"
@@ -38,7 +45,7 @@ export function ServicePage() {
           </motion.div>
           <motion.div initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}>
             <div style={{ border: "2px solid #178B4C", overflow: "hidden" }}>
-              <img src={teamImg} alt="Reddonatura service team at our facility"
+              <img loading="lazy" decoding="async" src={teamImg} alt="Reddonatura service team at our facility"
                 className="w-full object-cover" style={{ height: "340px", objectFit: "cover", objectPosition: "center 35%" }} />
             </div>
           </motion.div>

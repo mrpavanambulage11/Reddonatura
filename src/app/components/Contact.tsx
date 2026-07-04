@@ -264,7 +264,7 @@ export function Contact({ onOpenForm }: { onOpenForm: () => void }) {
 
   {/* Logo */}
   <div className="flex justify-center mb-8">
-    <img
+    <img loading="lazy" decoding="async"
       src={quoteImage}
       alt="Reddonatura"
       className="w-56 h-auto object-contain"

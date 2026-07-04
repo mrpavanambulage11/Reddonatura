@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
-import { PageLayout, Section, SectionLabel, SpecsTable, FAQAccordion, PageCTA, Testimonials, MachineGallery } from "../PageLayout";
+import { PageLayout, Section, SectionLabel, SpecsTable, FAQAccordion, PageCTA, Testimonials, MachineGallery, usePageMeta, useStructuredData, breadcrumbSchema, productSchema, faqSchema } from "../PageLayout";
 import { CheckCircle2 } from "lucide-react";
-import img3 from "../../../imports/image-3.png";
+import img3 from "../../../imports/image-3.webp";
 
 const processSteps = [
   { step: "01", title: "Loading", desc: "Load the food waste into the hopper while the tap is on with running soft water." },
@@ -49,6 +49,17 @@ const faqs = [
 ];
 
 export function DewateringPage() {
+  usePageMeta(
+    "De-Watering Systems | Reddonatura",
+    "The rNATURE Dewaterer reduces food waste volume by 60–70% using centrifugal technology — a compact, plug-and-play unit for commercial kitchens.",
+    "/products/dewatering"
+  );
+  useStructuredData([
+    productSchema({ name: "rNATURE Dewaterer", description: "Centrifugal dewatering unit reducing food waste volume by 60–70%, compact and plug-and-play for commercial kitchens.", path: "/products/dewatering" }),
+    faqSchema(faqs),
+    breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Products", path: "/products/dewatering" }, { name: "De-Watering Systems", path: "/products/dewatering" }]),
+  ]);
+
   return (
     <PageLayout
       title="De-Watering Systems"
@@ -72,7 +83,7 @@ export function DewateringPage() {
           </motion.div>
           <motion.div initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}>
             <div style={{ border: "2px solid #178B4C", overflow: "hidden", boxShadow: "0 20px 45px rgba(5,49,20,0.15)" }}>
-              <img src={img3} alt="De-Watering System" className="w-full" style={{ maxHeight: "380px", objectFit: "cover" }} />
+              <img loading="lazy" decoding="async" src={img3} alt="De-Watering System" className="w-full" style={{ maxHeight: "380px", objectFit: "cover" }} />
             </div>
           </motion.div>
         </div>

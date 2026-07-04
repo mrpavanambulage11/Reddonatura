@@ -238,7 +238,7 @@ export function Clients() {
   padding: "14px 16px",
 }}
             >
-              <img
+              <img loading="lazy" decoding="async"
                 src={logo.src}
                 alt={logo.name}
                 draggable={false}

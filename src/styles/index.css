@@ -2,11 +2,52 @@
 @import './tailwind.css';
 @import './theme.css';
 
+/* ── Cross-device baseline ── */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
 
-button:focus,
-button:focus-visible {
-  outline: none !important;
-  box-shadow: none !important;
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+a, button, [role="button"] {
+  touch-action: manipulation;
+}
+
+/* Prevent iOS Safari from auto-zooming the page when a form field is focused */
+@media (max-width: 767px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Safe-area helpers for notches / home indicators (iOS & modern Android) */
+.safe-top {
+  padding-top: env(safe-area-inset-top);
+}
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.safe-right {
+  padding-right: env(safe-area-inset-right);
+}
+.safe-left {
+  padding-left: env(safe-area-inset-left);
+}
+
+/* Remove the default mouse-click ring, but always restore a clear ring for
+   keyboard navigation — invisible focus states are an accessibility bug. */
+button:focus:not(:focus-visible) {
+  outline: none;
+  box-shadow: none;
+}
+
+:focus-visible {
+  outline: 2px solid #178B4C;
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 ::selection {

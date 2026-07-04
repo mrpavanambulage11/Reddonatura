@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { PageLayout, Section, SectionLabel, FeatureCard, PageCTA, Testimonials, AnimatedNumber } from "../PageLayout";
+import { PageLayout, Section, SectionLabel, FeatureCard, PageCTA, Testimonials, AnimatedNumber, usePageMeta, useStructuredData, breadcrumbSchema, productSchema } from "../PageLayout";
 import { CheckCircle2, Flame, Zap, Recycle, BarChart3 } from "lucide-react";
 
 const process = [
@@ -33,6 +33,16 @@ const specs = [
 ];
 
 export function PyrolysisPage() {
+  usePageMeta(
+    "Pyrolysis Systems | Reddonatura",
+    "Advanced pyrolysis systems converting plastic and tyre waste into pyrolysis oil, carbon black, and syngas — near-zero landfill with commercially usable outputs.",
+    "/products/pyrolysis"
+  );
+  useStructuredData([
+    productSchema({ name: "Pyrolysis Waste-to-Fuel System", description: "Advanced thermal decomposition converting plastic and rubber waste into fuel oil, carbon black, and syngas.", path: "/products/pyrolysis" }),
+    breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Products", path: "/products/pyrolysis" }, { name: "Pyrolysis", path: "/products/pyrolysis" }]),
+  ]);
+
   return (
     <PageLayout
       title="Pyrolysis Solutions"
@@ -60,7 +70,7 @@ export function PyrolysisPage() {
           </motion.div>
           <motion.div initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}>
             <div style={{ border: "2px solid #178B4C", overflow: "hidden", boxShadow: "0 20px 45px rgba(5,49,20,0.15)" }}>
-              <img src="https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?w=800&h=600&fit=crop&auto=format"
+              <img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?w=800&h=600&fit=crop&auto=format"
                 alt="Pyrolysis plant" className="w-full" style={{ maxHeight: "420px", objectFit: "cover" }} />
             </div>
           </motion.div>

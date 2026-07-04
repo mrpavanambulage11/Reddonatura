@@ -1,0 +1,16 @@
+{
+  "name": "Reddonatura — Garbage to Green",
+  "short_name": "Reddonatura",
+  "description": "Organic waste converters, biogas plants, de-watering systems, and solar solutions for a sustainable future.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F5F4EF",
+  "theme_color": "#053114",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

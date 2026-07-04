@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
-import { PageLayout, Section, SectionLabel, FeatureCard, PageCTA, Testimonials, MachineGallery } from "../PageLayout";
+import { PageLayout, Section, SectionLabel, FeatureCard, PageCTA, Testimonials, MachineGallery, usePageMeta, useStructuredData, breadcrumbSchema, productSchema } from "../PageLayout";
 import { Sun, Zap, Shield, TrendingUp, CheckCircle2 } from "lucide-react";
-import img4 from "../../../imports/image-4.png";
+import img4 from "../../../imports/image-4.webp";
 
 const features = [
   { icon: <Sun className="w-5 h-5" />, title: "High-Efficiency Panels", desc: "Utilize advanced photovoltaic technology to maximize energy conversion rates, delivering superior performance even in variable lighting conditions." },
@@ -45,6 +45,16 @@ const process = [
 ];
 
 export function SolarPage() {
+  usePageMeta(
+    "RN Solar Solutions | Reddonatura",
+    "On-grid, off-grid, and hybrid solar power systems with real-time monitoring for residential, commercial, and industrial clients.",
+    "/products/solar"
+  );
+  useStructuredData([
+    productSchema({ name: "RN Solar Power System", description: "On-grid, off-grid, and hybrid solar systems tailored to residential, commercial, and industrial energy needs, backed by real-time monitoring.", path: "/products/solar" }),
+    breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Products", path: "/products/solar" }, { name: "RN Solar", path: "/products/solar" }]),
+  ]);
+
   return (
     <PageLayout
       title="RN Solar Solutions"
@@ -65,7 +75,7 @@ export function SolarPage() {
           </motion.div>
           <motion.div initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}>
             <div style={{ border: "2px solid #178B4C", overflow: "hidden", boxShadow: "0 20px 45px rgba(5,49,20,0.15)" }}>
-              <img src={img4} alt="RN Solar Panels" className="w-full" style={{ maxHeight: "400px", objectFit: "cover" }} />
+              <img loading="lazy" decoding="async" src={img4} alt="RN Solar Panels" className="w-full" style={{ maxHeight: "400px", objectFit: "cover" }} />
             </div>
           </motion.div>
         </div>
@@ -92,7 +102,7 @@ export function SolarPage() {
             <motion.div key={i} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.1 * i }}
               className="flex flex-col" style={{ border: "1px solid rgba(23,139,76,0.15)" }}>
               <div className="overflow-hidden" style={{ height: "180px" }}>
-                <img src={t.img} alt={t.title} className="w-full h-full object-cover" style={{ border: "2px solid #178B4C" }} />
+                <img loading="lazy" decoding="async" src={t.img} alt={t.title} className="w-full h-full object-cover" style={{ border: "2px solid #178B4C" }} />
               </div>
               <div className="p-5 flex flex-col flex-1" style={{ backgroundColor: "#053114" }}>
                 <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600, fontSize: "1rem", color: "#A0780E", marginBottom: "8px" }}>{t.title}</h3>

@@ -95,7 +95,7 @@ export function Products() {
             >
               {/* Image */}
               <div className="overflow-hidden flex-shrink-0" style={{ aspectRatio: "4/3", border: "1px solid #155A30" }}>
-                <img
+                <img loading="lazy" decoding="async"
                   src={cat.image}
                   alt={cat.title}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"

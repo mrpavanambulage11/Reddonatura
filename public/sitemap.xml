@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://reddonatura.vercel.app/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://reddonatura.vercel.app/about</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://reddonatura.vercel.app/service</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://reddonatura.vercel.app/clients</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://reddonatura.vercel.app/contact</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://reddonatura.vercel.app/faqs</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://reddonatura.vercel.app/products/organic-waste-digester</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://reddonatura.vercel.app/products/wet-waste</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://reddonatura.vercel.app/products/windrow-compost</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://reddonatura.vercel.app/products/biomining</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://reddonatura.vercel.app/products/pyrolysis</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://reddonatura.vercel.app/products/shredders</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://reddonatura.vercel.app/products/dewatering</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://reddonatura.vercel.app/products/trommel-screens</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://reddonatura.vercel.app/products/biogas</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://reddonatura.vercel.app/products/solar</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://reddonatura.vercel.app/privacy-policy</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://reddonatura.vercel.app/terms-and-conditions</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+</urlset>

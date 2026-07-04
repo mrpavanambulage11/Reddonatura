@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { PageLayout, Section, SectionLabel, FeatureCard, PageCTA, Testimonials } from "../PageLayout";
+import { PageLayout, Section, SectionLabel, FeatureCard, PageCTA, Testimonials, usePageMeta, useStructuredData, breadcrumbSchema, productSchema } from "../PageLayout";
 import { CheckCircle2, Sun, Wind, Layers, Recycle } from "lucide-react";
 
 const process = [
@@ -20,6 +20,16 @@ const equipment = [
 ];
 
 export function WindrowCompostPage() {
+  usePageMeta(
+    "Windrow Composting Systems | Reddonatura",
+    "Solarised, automated windrow composting systems for large-scale municipal and institutional organic waste — cluster-based processing into high-grade compost.",
+    "/products/windrow-compost"
+  );
+  useStructuredData([
+    productSchema({ name: "Solarised Windrow Composting System", description: "Cluster-based, solarised windrow composting systems for large-scale municipal and institutional organic waste processing.", path: "/products/windrow-compost" }),
+    breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Products", path: "/products/windrow-compost" }, { name: "Windrow Composting", path: "/products/windrow-compost" }]),
+  ]);
+
   return (
     <PageLayout
       title="Windrow Composting"
@@ -39,7 +49,7 @@ export function WindrowCompostPage() {
           </motion.div>
           <motion.div initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}>
             <div style={{ border: "2px solid #178B4C", overflow: "hidden", boxShadow: "0 20px 45px rgba(5,49,20,0.15)" }}>
-              <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800&h=500&fit=crop&auto=format"
+              <img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800&h=500&fit=crop&auto=format"
                 alt="Windrow Composting" className="w-full" style={{ maxHeight: "400px", objectFit: "cover" }} />
             </div>
           </motion.div>

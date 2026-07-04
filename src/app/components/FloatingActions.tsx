@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Phone, Mail, X, Send } from "lucide-react";
+import { Phone, Mail, X, Send, Plus } from "lucide-react";
 import { getBotAnswer, suggestedQuestions } from "./chatbotKnowledge";
 import botAvatar from "../../imports/chatbot-avatar.png";
 
@@ -59,6 +59,7 @@ export function FloatingActions() {
   const [hovered, setHovered] = useState<string | null>(null);
   const [chatOpen, setChatOpen] = useState(false);
   const [showGreeting, setShowGreeting] = useState(false);
+  const [mobileExpanded, setMobileExpanded] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
     { id: msgId++, sender: "bot", text: "Hi there! I'm the Reddonatura assistant 🤖 Ask me about our products, industries, pricing, or locations — I'm happy to help." },
   ]);
@@ -97,7 +98,13 @@ export function FloatingActions() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-[60] flex flex-col items-end gap-5">
+    <div
+      className="fixed z-[60] flex flex-col items-end gap-3 sm:gap-5"
+      style={{
+        bottom: "calc(1rem + env(safe-area-inset-bottom))",
+        right: "calc(1rem + env(safe-area-inset-right))",
+      }}
+    >
       <AnimatePresence>
         {chatOpen && (
           <motion.div
@@ -243,13 +250,14 @@ export function FloatingActions() {
         )}
       </AnimatePresence>
 
+      {/* Desktop / tablet: always-visible stack */}
       {actions.map((a, i) => (
         <motion.div
           key={a.key}
           initial={{ opacity: 0, scale: 0.4, y: 14 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.45, delay: 0.15 + i * 0.09, ease: [0.22, 1, 0.36, 1] }}
-          className="relative flex items-center"
+          className="relative hidden sm:flex items-center"
           onMouseEnter={() => setHovered(a.key)}
           onMouseLeave={() => setHovered((h) => (h === a.key ? null : h))}
         >
@@ -300,19 +308,70 @@ export function FloatingActions() {
             target={a.external ? "_blank" : undefined}
             rel={a.external ? "noopener noreferrer" : undefined}
             aria-label={a.label}
-            className="group flex items-center justify-center rounded-full flex-shrink-0 transition-all duration-300 hover:-translate-y-1.5 hover:scale-110"
+            className="group flex items-center justify-center rounded-full flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 transition-all duration-300 hover:-translate-y-1.5 hover:scale-110"
             style={{
-              width: "64px",
-              height: "64px",
               background: a.bg,
               border: "1.5px solid rgba(255,255,255,0.4)",
               boxShadow: `0 14px 30px ${a.ring}, inset 0 1.5px 1.5px rgba(255,255,255,0.5), inset 0 -8px 12px rgba(0,0,0,0.12)`,
             }}
           >
-            <a.icon className="w-7 h-7 transition-transform duration-300 group-hover:scale-110 drop-shadow-sm" style={{ color: "#ffffff" }} />
+            <a.icon className="w-6 h-6 sm:w-7 sm:h-7 transition-transform duration-300 group-hover:scale-110 drop-shadow-sm" style={{ color: "#ffffff" }} />
           </a>
         </motion.div>
       ))}
+
+      {/* Mobile: collapsed speed-dial to avoid covering page content */}
+      <div className="flex sm:hidden flex-col items-end gap-3">
+        <AnimatePresence>
+          {mobileExpanded &&
+            actions.map((a, i) => (
+              <motion.a
+                key={a.key}
+                href={a.href}
+                target={a.external ? "_blank" : undefined}
+                rel={a.external ? "noopener noreferrer" : undefined}
+                aria-label={a.label}
+                initial={{ opacity: 0, scale: 0.5, y: 10 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.5, y: 10 }}
+                transition={{ duration: 0.2, delay: i * 0.05, ease: [0.22, 1, 0.36, 1] }}
+                className="flex items-center justify-center rounded-full flex-shrink-0"
+                style={{
+                  width: "52px",
+                  height: "52px",
+                  background: a.bg,
+                  border: "1.5px solid rgba(255,255,255,0.4)",
+                  boxShadow: `0 10px 22px ${a.ring}`,
+                }}
+              >
+                <a.icon className="w-5 h-5" style={{ color: "#ffffff" }} />
+              </motion.a>
+            ))}
+        </AnimatePresence>
+
+        <button
+          onClick={() => setMobileExpanded((v) => !v)}
+          aria-label={mobileExpanded ? "Close quick contact options" : "Quick contact options"}
+          className="flex items-center justify-center rounded-full flex-shrink-0 w-14 h-14 transition-transform duration-300 active:scale-95"
+          style={{
+            background: "linear-gradient(145deg, #1FA05A, #0D8239 70%)",
+            border: "1.5px solid rgba(255,255,255,0.4)",
+            boxShadow: "0 12px 26px rgba(23,139,76,0.4)",
+          }}
+        >
+          <AnimatePresence mode="wait" initial={false}>
+            {mobileExpanded ? (
+              <motion.div key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.15 }}>
+                <X className="w-5 h-5" style={{ color: "#ffffff" }} />
+              </motion.div>
+            ) : (
+              <motion.div key="plus" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.15 }}>
+                <Plus className="w-5 h-5" style={{ color: "#ffffff" }} />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </button>
+      </div>
 
       {/* Chatbot — primary action */}
       <motion.div
@@ -375,12 +434,10 @@ export function FloatingActions() {
         />
 
         <button
-          onClick={() => { setChatOpen((v) => !v); setShowGreeting(false); }}
+          onClick={() => { setChatOpen((v) => !v); setShowGreeting(false); setMobileExpanded(false); }}
           aria-label="Chat with Reddonatura"
-          className="group relative flex items-center justify-center rounded-full overflow-hidden flex-shrink-0 transition-all duration-300 hover:-translate-y-1.5 hover:scale-110"
+          className="group relative flex items-center justify-center rounded-full overflow-hidden flex-shrink-0 w-16 h-16 sm:w-[78px] sm:h-[78px] transition-all duration-300 hover:-translate-y-1.5 hover:scale-110"
           style={{
-            width: "78px",
-            height: "78px",
             backgroundColor: "#103a1f",
             border: "2px solid rgba(217,182,92,0.5)",
             boxShadow: "0 18px 40px rgba(5,49,20,0.5), inset 0 1.5px 1.5px rgba(255,255,255,0.3)",
@@ -403,7 +460,7 @@ export function FloatingActions() {
           <AnimatePresence mode="wait" initial={false}>
             {chatOpen ? (
               <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
-                <X className="w-7 h-7" style={{ color: "#ffffff" }} />
+                <X className="w-6 h-6 sm:w-7 sm:h-7" style={{ color: "#ffffff" }} />
               </motion.div>
             ) : (
               <motion.div key="bot" initial={{ rotate: 90, opacity: 0, scale: 0.6 }} animate={{ rotate: 0, opacity: 1, scale: 1 }} exit={{ rotate: -90, opacity: 0, scale: 0.6 }} transition={{ duration: 0.25 }} className="w-full h-full">

@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
-import { PageLayout, Section, SectionLabel, FeatureCard, PageCTA, Testimonials, MachineGallery } from "../PageLayout";
+import { PageLayout, Section, SectionLabel, FeatureCard, PageCTA, Testimonials, MachineGallery, usePageMeta, useStructuredData, breadcrumbSchema, productSchema } from "../PageLayout";
 import { Settings, Shield, Zap, RotateCcw, CheckCircle2 } from "lucide-react";
-import img5 from "../../../imports/image-5.png";
+import img5 from "../../../imports/image-5.webp";
 
 const features = [
   { icon: <Zap className="w-5 h-5" />, title: "High-Torque Mechanism", desc: "Ensures efficient shredding of materials with minimal effort, delivering maximum throughput even for tough, heterogeneous waste." },
@@ -31,6 +31,16 @@ const models = [
 ];
 
 export function ShreddersPage() {
+  usePageMeta(
+    "Industrial Shredders | Reddonatura",
+    "Single, dual, and four-shaft industrial shredders plus wood chippers — high-torque, low-noise, auto-reverse waste size reduction for diverse waste streams.",
+    "/products/shredders"
+  );
+  useStructuredData([
+    productSchema({ name: "Industrial Waste Shredders", description: "Single, dual, and four-shaft shredders plus wood chippers engineered for high-torque, low-noise waste size reduction.", path: "/products/shredders" }),
+    breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Products", path: "/products/shredders" }, { name: "Industrial Shredders", path: "/products/shredders" }]),
+  ]);
+
   return (
     <PageLayout
       title="Industrial Shredders"
@@ -55,7 +65,7 @@ export function ShreddersPage() {
           </motion.div>
           <motion.div initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}>
             <div style={{ border: "2px solid #178B4C", overflow: "hidden", boxShadow: "0 20px 45px rgba(5,49,20,0.15)" }}>
-              <img src={img5} alt="Industrial Shredder" className="w-full" style={{ maxHeight: "360px", objectFit: "cover" }} />
+              <img loading="lazy" decoding="async" src={img5} alt="Industrial Shredder" className="w-full" style={{ maxHeight: "360px", objectFit: "cover" }} />
             </div>
           </motion.div>
         </div>

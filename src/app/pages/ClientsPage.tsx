@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { PageLayout, Section, SectionLabel, FeatureCard, PageCTA } from "./PageLayout";
+import { PageLayout, Section, SectionLabel, FeatureCard, PageCTA, usePageMeta, useStructuredData, breadcrumbSchema } from "./PageLayout";
 import { Handshake, TrendingUp, Lightbulb, Star, Leaf } from "lucide-react";
 
 import logoIbis from "../../imports/IBIS.png";
@@ -52,6 +52,13 @@ const pillars = [
 ];
 
 export function ClientsPage() {
+  usePageMeta(
+    "Clients & Partners | Reddonatura",
+    "Trusted by 7,000+ clients worldwide including IBIS Hotels, Marriott Bonvoy, IKEA, McDonald's, Dell, and Kempegowda International Airport for organic waste management solutions.",
+    "/clients"
+  );
+  useStructuredData(breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Clients & Partners", path: "/clients" }]));
+
   return (
     <PageLayout
       title="Clients & Partners"
@@ -74,7 +81,7 @@ export function ClientsPage() {
             <motion.div key={logo.name} initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.35, delay: 0.04 * i }}
               className="flex items-center justify-center p-3 rounded-2xl transition-all duration-300 hover:-translate-y-1"
               style={{ backgroundColor: "#ffffff", border: "1px solid rgba(23,139,76,0.12)", boxShadow: "0 4px 16px rgba(0,0,0,0.05)", height: "64px" }}>
-              <img
+              <img loading="lazy" decoding="async"
                 src={logo.src}
                 alt={logo.name}
                 className="max-w-full object-contain transition-transform duration-300 hover:scale-105"

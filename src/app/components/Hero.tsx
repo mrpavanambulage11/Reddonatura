@@ -3,8 +3,8 @@ import { ArrowRight, ArrowDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { useInView } from "./hooks/useInView";
-import heroDesktop from "../../imports/hero-desktop.png";
-import heroMobile from "../../imports/hero-mobile.png";
+import heroDesktop from "../../imports/hero-desktop.webp";
+import heroMobile from "../../imports/hero-mobile.webp";
 
 function CountUp({
   end,
@@ -53,6 +53,9 @@ export function Hero({ onOpenForm }: { onOpenForm: () => void }) {
       alt="Reddonatura — Garbage to Green"
       className="absolute inset-0 w-full h-full object-cover"
       style={{ objectPosition: "center center" }}
+      // @ts-ignore -- React 18 only recognizes the lowercase HTML attribute form
+      fetchpriority="high"
+      decoding="async"
     />
   </picture>
 </div>

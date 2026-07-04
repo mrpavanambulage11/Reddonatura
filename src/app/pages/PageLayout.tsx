@@ -57,25 +57,149 @@ export function AnimatedNumber({ value, duration = 1600 }: { value: string; dura
   );
 }
 
-export function usePageMeta(title: string, description: string) {
+const SITE_URL = "https://reddonatura.vercel.app";
+const DEFAULT_OG_IMAGE = `${SITE_URL}/icon-512.png`;
+
+function upsertMeta(selector: string, build: () => HTMLMetaElement, content: string) {
+  let el = document.querySelector(selector) as HTMLMetaElement | null;
+  const prev = el?.getAttribute("content") ?? null;
+  if (!el) {
+    el = build();
+    document.head.appendChild(el);
+  }
+  el.setAttribute("content", content);
+  return { el, prev };
+}
+
+/**
+ * Sets a unique title, description, canonical URL, and Open Graph / Twitter
+ * tags for the page — restoring the previous values on unmount so route
+ * changes never leak stale meta into the next page.
+ */
+export function usePageMeta(title: string, description: string, path: string = "") {
   useEffect(() => {
     const prevTitle = document.title;
     document.title = title;
+    const url = `${SITE_URL}${path}`;
 
-    let meta = document.querySelector('meta[name="description"]') as HTMLMetaElement | null;
-    const prevDescription = meta?.getAttribute("content") ?? null;
-    if (!meta) {
-      meta = document.createElement("meta");
-      meta.name = "description";
-      document.head.appendChild(meta);
+    const restores: Array<() => void> = [];
+
+    const { el: descEl, prev: prevDesc } = upsertMeta('meta[name="description"]', () => {
+      const m = document.createElement("meta");
+      m.name = "description";
+      return m;
+    }, description);
+    restores.push(() => { if (prevDesc !== null) descEl.setAttribute("content", prevDesc); });
+
+    let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
+    const prevCanonical = canonical?.getAttribute("href") ?? null;
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.rel = "canonical";
+      document.head.appendChild(canonical);
     }
-    meta.setAttribute("content", description);
+    canonical.setAttribute("href", url);
+    restores.push(() => { if (prevCanonical !== null) canonical!.setAttribute("href", prevCanonical); });
+
+    const ogFields: [string, string][] = [
+      ['meta[property="og:title"]', title],
+      ['meta[property="og:description"]', description],
+      ['meta[property="og:url"]', url],
+      ['meta[property="og:image"]', DEFAULT_OG_IMAGE],
+      ['meta[name="twitter:title"]', title],
+      ['meta[name="twitter:description"]', description],
+    ];
+    for (const [selector, content] of ogFields) {
+      const isProperty = selector.includes("property=");
+      const attrMatch = selector.match(/"([^"]+)"/)?.[1] ?? "";
+      const { el, prev } = upsertMeta(selector, () => {
+        const m = document.createElement("meta");
+        if (isProperty) m.setAttribute("property", attrMatch);
+        else m.setAttribute("name", attrMatch);
+        return m;
+      }, content);
+      restores.push(() => { if (prev !== null) el.setAttribute("content", prev); });
+    }
 
     return () => {
       document.title = prevTitle;
-      if (meta && prevDescription !== null) meta.setAttribute("content", prevDescription);
+      restores.forEach((r) => r());
     };
-  }, [title, description]);
+  }, [title, description, path]);
+}
+
+/**
+ * Injects one JSON-LD <script> per structured-data object for the lifetime
+ * of the page (each item keeps its own "@context", which is what Google's
+ * structured-data parser expects — a bare top-level array of documents is not).
+ */
+export function useStructuredData(data: object | object[]) {
+  useEffect(() => {
+    const items = Array.isArray(data) ? data : [data];
+    const scripts = items.map((item) => {
+      const script = document.createElement("script");
+      script.type = "application/ld+json";
+      script.text = JSON.stringify(item);
+      document.head.appendChild(script);
+      return script;
+    });
+    return () => { scripts.forEach((s) => document.head.removeChild(s)); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(data)]);
+}
+
+/** Marks the current page as noindex,follow for the lifetime of the component (e.g. the 404 page). */
+export function useNoIndex() {
+  useEffect(() => {
+    let meta = document.querySelector('meta[name="robots"]') as HTMLMetaElement | null;
+    const prev = meta?.getAttribute("content") ?? null;
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.name = "robots";
+      document.head.appendChild(meta);
+    }
+    meta.setAttribute("content", "noindex, follow");
+    return () => { if (prev !== null) meta!.setAttribute("content", prev); };
+  }, []);
+}
+
+export function breadcrumbSchema(items: { name: string; path: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: item.name,
+      item: `${SITE_URL}${item.path}`,
+    })),
+  };
+}
+
+export function productSchema({ name, description, path, image }: { name: string; description: string; path: string; image?: string }) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name,
+    description,
+    url: `${SITE_URL}${path}`,
+    image: image ?? DEFAULT_OG_IMAGE,
+    brand: { "@type": "Brand", name: "Reddonatura" },
+    manufacturer: { "@id": `${SITE_URL}/#organization` },
+    category: "Organic Waste Management Equipment",
+  };
+}
+
+export function faqSchema(items: { q: string; a: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  };
 }
 
 interface PageLayoutProps {
@@ -365,7 +489,7 @@ export function MachineGallery({ images }: { images: { src: string; caption?: st
           {images.map((img, i) => (
             <motion.div key={i} initial={{ opacity: 0, scale: 0.97 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.06 * i }}
               className="rn-card-shadow overflow-hidden group hover:-translate-y-1" style={{ border: "1px solid rgba(23,139,76,0.15)", aspectRatio: "1/1" }}>
-              <img src={img.src} alt={img.caption || "Machine"} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              <img loading="lazy" decoding="async" src={img.src} alt={img.caption || "Machine"} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
               {img.caption && (
                 <div className="px-3 py-2" style={{ backgroundColor: "#053114" }}>
                   <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(255,255,255,0.75)" }}>{img.caption}</span>
