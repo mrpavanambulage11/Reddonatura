@@ -1,5 +1,6 @@
-import logo from "../../imports/image.png";
-import { Mail, Phone, Linkedin, Twitter, Facebook, Instagram, ArrowUpRight } from "lucide-react";
+import { Link } from "react-router-dom";
+import logo from "../../imports/reddonaturafooter logo.png";
+import { Mail, Phone, MapPin, Linkedin, Twitter, Facebook, Instagram, ArrowUpRight } from "lucide-react";
 
 const quickLinks = [
   { href: "#home", label: "Home" },
@@ -19,10 +20,10 @@ const productLinks = [
 ];
 
 const socials = [
-  { icon: Linkedin, href: "#", label: "LinkedIn" },
-  { icon: Twitter, href: "#", label: "Twitter" },
-  { icon: Facebook, href: "#", label: "Facebook" },
-  { icon: Instagram, href: "#", label: "Instagram" },
+  { icon: Linkedin, href: "#", label: "LinkedIn", className: "social-linkedin" },
+  { icon: Twitter, href: "#", label: "Twitter", className: "social-twitter" },
+  { icon: Facebook, href: "#", label: "Facebook", className: "social-facebook" },
+  { icon: Instagram, href: "#", label: "Instagram", className: "social-instagram" },
 ];
 
 const labelStyle = {
@@ -55,11 +56,11 @@ export function Footer() {
         <div className="grid md:grid-cols-[1.4fr_1fr_1fr_1fr] gap-x-8 gap-y-12 mb-16">
           {/* Brand column */}
           <div>
-            <div className="inline-block mb-6 px-3 py-2 bg-white">
+            <div className="inline-block mb-6 px-3 py-1.5 bg-white">
               <img
                 src={logo}
                 alt="Reddonatura"
-                className="h-8 object-contain"
+                className="h-5 object-contain"
               />
             </div>
             <p
@@ -83,10 +84,9 @@ export function Footer() {
                   key={s.label}
                   href={s.href}
                   aria-label={s.label}
-                  className="w-9 h-9 flex items-center justify-center transition-colors duration-200 hover:bg-[#0D8239]"
-                  style={{ border: "1px solid rgba(245,240,232,0.12)" }}
+                  className={`social-icon ${s.className} group w-10 h-10 flex items-center justify-center`}
                 >
-                  <s.icon className="w-3.5 h-3.5" style={{ color: "rgba(245,240,232,0.8)" }} />
+                  <s.icon className="w-4 h-4 transition-colors duration-200" style={{ color: "rgba(245,240,232,0.8)" }} />
                 </a>
               ))}
             </div>
@@ -102,7 +102,7 @@ export function Footer() {
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    className="hover:text-white transition-colors duration-200"
+                    className="inline-block hover:text-[#D9B65C] hover:translate-x-1.5 transition-all duration-200"
                     style={linkStyle}
                   >
                     {link.label}
@@ -122,7 +122,7 @@ export function Footer() {
                 <li key={p}>
                   <a
                     href="#products"
-                    className="hover:text-white transition-colors duration-200"
+                    className="inline-block hover:text-[#D9B65C] hover:translate-x-1.5 transition-all duration-200"
                     style={linkStyle}
                   >
                     {p}
@@ -168,6 +168,15 @@ export function Footer() {
                   info@reddonatura.com
                 </span>
               </a>
+              <div className="flex items-start gap-3">
+                <MapPin
+                  className="w-3.5 h-3.5 mt-0.5 flex-shrink-0"
+                  style={{ color: "#A0780E" }}
+                />
+                <span style={linkStyle}>
+                  Sy. No 41/1, Veerenahalli Village, Virgonagar Industrial Estate, Bidarahalli Hobli, Post, beside Cipla Factory, Virgonagar, J.I.Veerenahalli, Karnataka 560049
+                </span>
+              </div>
 
               <div
                 className="mt-8 pt-8"
@@ -192,10 +201,31 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div
-          className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pt-8"
+          className="grid grid-cols-1 sm:grid-cols-3 items-center gap-4 pt-8"
           style={{ borderTop: "1px solid rgba(245,240,232,0.08)" }}
         >
           <p
+            className="order-2 sm:order-1 text-left"
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: "0.75rem",
+              color: "rgba(245,240,232,0.5)",
+            }}
+          >
+            Designed and developed by{" "}
+            <a
+              href="https://www.glazinggenius.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white transition-colors duration-200"
+              style={{ color: "rgba(245,240,232,0.75)", fontWeight: 500 }}
+            >
+              Glazing Genius
+            </a>
+          </p>
+
+          <p
+            className="order-1 sm:order-2 text-center"
             style={{
               fontFamily: "'DM Mono', monospace",
               fontSize: "0.75rem",
@@ -204,11 +234,15 @@ export function Footer() {
           >
             © 2026 Reddonatura India Private Limited. All rights reserved.
           </p>
-          <div className="flex gap-6">
-            {["Terms & Conditions", "Privacy Policy", "FAQs"].map((item) => (
-              <a
-                key={item}
-                href="#"
+
+          <div className="order-3 flex gap-6 sm:justify-end">
+            {[
+              { label: "Terms & Conditions", href: "/terms-and-conditions" },
+              { label: "Privacy Policy", href: "/privacy-policy" },
+            ].map((item) => (
+              <Link
+                key={item.label}
+                to={item.href}
                 className="hover:text-white/70 transition-colors duration-200"
                 style={{
                   fontFamily: "'DM Sans', sans-serif",
@@ -216,8 +250,8 @@ export function Footer() {
                   color: "rgba(245,240,232,0.55)",
                 }}
               >
-                {item}
-              </a>
+                {item.label}
+              </Link>
             ))}
           </div>
         </div>

@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { PageLayout, Section, SectionLabel, SpecsTable, FAQItem, IndustriesServed, PageCTA, Testimonials, MachineGallery } from "../PageLayout";
+import { PageLayout, Section, SectionLabel, SpecsTable, FAQAccordion, PageCTA, Testimonials, MachineGallery } from "../PageLayout";
 import { CheckCircle2 } from "lucide-react";
 import img3 from "../../../imports/image-3.png";
 
@@ -58,20 +58,20 @@ export function DewateringPage() {
       <Section>
         <div className="grid lg:grid-cols-2 gap-14 items-center">
           <motion.div initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-            <SectionLabel label="De-Watering Innovation" />
+            <div className="text-center"><SectionLabel label="De-Watering Innovation" /></div>
             <p className="mb-5" style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: "0.975rem", color: "#5A6B5C", lineHeight: 1.8 }}>
               The rNATURE Dewaterer is the answer to your food waste problem. It is a compact stand-alone solution for food waste handling and can rapidly deal with all kinds of organic food waste in large quantities.
             </p>
             <p className="mb-6" style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: "0.975rem", color: "#5A6B5C", lineHeight: 1.8 }}>
               Best suited for high volume waste generation sites, the rNATURE Dewaterer requires an extremely small area and therefore can fit in storage or garbage rooms as well.
             </p>
-            <div className="p-5" style={{ backgroundColor: "rgba(23,139,76,0.08)", border: "1px solid rgba(23,139,76,0.2)" }}>
+            <div className="p-5 rn-card-shadow" style={{ backgroundColor: "rgba(23,139,76,0.08)", border: "1px solid rgba(23,139,76,0.2)" }}>
               <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: "2rem", color: "#178B4C" }}>60–70%</div>
               <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.875rem", color: "#5A6B5C", marginTop: "4px" }}>Food waste volume reduction</div>
             </div>
           </motion.div>
           <motion.div initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}>
-            <div style={{ border: "2px solid #178B4C", overflow: "hidden" }}>
+            <div style={{ border: "2px solid #178B4C", overflow: "hidden", boxShadow: "0 20px 45px rgba(5,49,20,0.15)" }}>
               <img src={img3} alt="De-Watering System" className="w-full" style={{ maxHeight: "380px", objectFit: "cover" }} />
             </div>
           </motion.div>
@@ -79,11 +79,11 @@ export function DewateringPage() {
       </Section>
 
       <Section bg="#F5F4EF">
-        <SectionLabel label="How It Works" />
+        <div className="text-center mb-2"><SectionLabel label="How It Works" /></div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-6">
           {processSteps.map((s, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.1 * i }}
-              className="p-6" style={{ backgroundColor: "#ffffff", border: "1px solid rgba(23,139,76,0.15)" }}>
+              className="rn-card-shadow p-6 hover:-translate-y-1" style={{ backgroundColor: "#ffffff", border: "1px solid rgba(23,139,76,0.15)" }}>
               <div style={{ fontFamily: "'DM Mono', monospace", fontSize: "11px", color: "#A0780E", marginBottom: "8px" }}>{s.step}</div>
               <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600, fontSize: "1rem", color: "#053114", marginBottom: "8px" }}>{s.title}</h3>
               <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: "0.85rem", color: "#5A6B5C", lineHeight: 1.65 }}>{s.desc}</p>
@@ -95,7 +95,7 @@ export function DewateringPage() {
       <Section>
         <div className="grid lg:grid-cols-2 gap-12">
           <div>
-            <SectionLabel label="Key Benefits" />
+            <div className="text-center"><SectionLabel label="Key Benefits" /></div>
             <div className="space-y-3 mt-4">
               {benefits.map((b, i) => (
                 <div key={i} className="flex items-start gap-3 p-3" style={{ border: "1px solid rgba(23,139,76,0.12)" }}>
@@ -106,11 +106,11 @@ export function DewateringPage() {
             </div>
           </div>
           <div>
-            <SectionLabel label="Cannot Process" />
-            <p className="mb-4" style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: "0.875rem", color: "#5A6B5C" }}>
+            <div className="text-center"><SectionLabel label="Cannot Process" /></div>
+            <p className="mb-4 text-center" style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: "0.875rem", color: "#5A6B5C" }}>
               All kinds of inorganic matters like metal, plastic, and paper cannot be processed:
             </p>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 justify-center">
               {cannotProcess.map(item => (
                 <span key={item} className="px-3 py-1.5 text-[11px] tracking-wide"
                   style={{ backgroundColor: "rgba(160,120,14,0.08)", border: "1px solid rgba(160,120,14,0.2)", fontFamily: "'DM Sans', sans-serif", fontWeight: 500, color: "#A0780E" }}>
@@ -123,14 +123,14 @@ export function DewateringPage() {
       </Section>
 
       <Section bg="#F5F4EF">
-        <SectionLabel label="Technical Data" />
-        <div className="mt-4 max-w-2xl"><SpecsTable headers={specs.headers} rows={specs.rows} /></div>
+        <div className="text-center mb-2"><SectionLabel label="Technical Data" /></div>
+        <div className="mt-4 max-w-2xl mx-auto"><SpecsTable headers={specs.headers} rows={specs.rows} /></div>
       </Section>
 
       <Section>
-        <SectionLabel label="FAQ" />
-        <div className="mt-4 max-w-3xl">
-          {faqs.map((f, i) => <FAQItem key={i} question={f.q} answer={f.a} />)}
+        <div className="text-center mb-2"><SectionLabel label="FAQ" /></div>
+        <div className="mt-4 max-w-3xl mx-auto">
+          <FAQAccordion items={faqs} />
         </div>
       </Section>
 
@@ -141,7 +141,6 @@ export function DewateringPage() {
         { src: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400&h=400&fit=crop&auto=format", caption: "Waste Reduction" },
       ]} />
       <Testimonials />
-      <IndustriesServed />
       <PageCTA />
     </PageLayout>
   );

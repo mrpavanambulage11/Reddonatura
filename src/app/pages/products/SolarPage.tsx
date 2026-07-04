@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { PageLayout, Section, SectionLabel, FeatureCard, IndustriesServed, PageCTA, Testimonials, MachineGallery } from "../PageLayout";
+import { PageLayout, Section, SectionLabel, FeatureCard, PageCTA, Testimonials, MachineGallery } from "../PageLayout";
 import { Sun, Zap, Shield, TrendingUp, CheckCircle2 } from "lucide-react";
 import img4 from "../../../imports/image-4.png";
 
@@ -55,7 +55,7 @@ export function SolarPage() {
       <Section>
         <div className="grid lg:grid-cols-2 gap-14 items-center">
           <motion.div initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-            <SectionLabel label="Solar Energy" />
+            <div className="text-center"><SectionLabel label="Solar Energy" /></div>
             <p className="mb-5" style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: "0.975rem", color: "#5A6B5C", lineHeight: 1.8 }}>
               At Reddonatura, we believe in the transformative power of solar energy. With rising environmental concerns and the need for sustainable energy sources, solar power presents a promising solution. Our team of experts is dedicated to providing top-notch solar solutions for all client types.
             </p>
@@ -64,7 +64,7 @@ export function SolarPage() {
             </p>
           </motion.div>
           <motion.div initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}>
-            <div style={{ border: "2px solid #178B4C", overflow: "hidden" }}>
+            <div style={{ border: "2px solid #178B4C", overflow: "hidden", boxShadow: "0 20px 45px rgba(5,49,20,0.15)" }}>
               <img src={img4} alt="RN Solar Panels" className="w-full" style={{ maxHeight: "400px", objectFit: "cover" }} />
             </div>
           </motion.div>
@@ -78,7 +78,7 @@ export function SolarPage() {
           <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: "1rem", color: "#5A6B5C", maxWidth: "480px", margin: "0 auto" }}>With R-Nature, you don't get just a machine.</p>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {features.map((f, i) => <FeatureCard key={i} title={f.title} description={f.desc} icon={f.icon} />)}
+          {features.map((f, i) => <FeatureCard key={i} title={f.title} description={f.desc} icon={f.icon} centered />)}
         </div>
       </Section>
 
@@ -111,7 +111,7 @@ export function SolarPage() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {process.map((s, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.1 * i }}
-              className="p-6" style={{ backgroundColor: "#ffffff", border: "1px solid rgba(23,139,76,0.15)" }}>
+              className="rn-card-shadow p-6 hover:-translate-y-1" style={{ backgroundColor: "#ffffff", border: "1px solid rgba(23,139,76,0.15)" }}>
               <div style={{ fontFamily: "'DM Mono', monospace", fontSize: "11px", color: "#A0780E", marginBottom: "8px" }}>{s.step}</div>
               <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600, fontSize: "1rem", color: "#053114", marginBottom: "8px" }}>{s.title}</h3>
               <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: "0.85rem", color: "#5A6B5C", lineHeight: 1.65 }}>{s.desc}</p>
@@ -122,7 +122,7 @@ export function SolarPage() {
 
       {/* Benefits */}
       <Section>
-        <SectionLabel label="Key Benefits" />
+        <div className="text-center mb-2"><SectionLabel label="Key Benefits" /></div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
           {benefits.map((b, i) => (
             <div key={i} className="flex items-start gap-3 p-4" style={{ border: "1px solid rgba(23,139,76,0.12)" }}>
@@ -140,7 +140,6 @@ export function SolarPage() {
         { src: "https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?w=400&h=400&fit=crop&auto=format", caption: "Monitoring Dashboard" },
       ]} />
       <Testimonials />
-      <IndustriesServed />
       <PageCTA />
     </PageLayout>
   );

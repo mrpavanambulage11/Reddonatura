@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { PageLayout, Section, SectionLabel, FeatureCard, SpecsTable, IndustriesServed, PageCTA, Testimonials, MachineGallery } from "../PageLayout";
+import { PageLayout, Section, SectionLabel, FeatureCard, SpecsTable, PageCTA, Testimonials, MachineGallery } from "../PageLayout";
 import { Settings, Filter, CheckCircle2 } from "lucide-react";
 import img6 from "../../../imports/image-6.png";
 
@@ -40,7 +40,7 @@ export function TrommelScreensPage() {
       <Section>
         <div className="grid lg:grid-cols-2 gap-14 items-center">
           <motion.div initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-            <SectionLabel label="Trommel Technology" />
+            <div className="text-center"><SectionLabel label="Trommel Technology" /></div>
             <p className="mb-5" style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: "0.975rem", color: "#5A6B5C", lineHeight: 1.8 }}>
               Reddonatura offers trommel screens that are indispensable tools in waste management, offering unparalleled versatility and performance. From landfill sites to MBT plants, recycling facilities, and automobile recycling plants, these screens excel in delivering efficient separation and sorting.
             </p>
@@ -49,7 +49,7 @@ export function TrommelScreensPage() {
             </p>
           </motion.div>
           <motion.div initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}>
-            <div style={{ border: "2px solid #178B4C", overflow: "hidden" }}>
+            <div style={{ border: "2px solid #178B4C", overflow: "hidden", boxShadow: "0 20px 45px rgba(5,49,20,0.15)" }}>
               <img src={img6} alt="Trommel Screen" className="w-full" style={{ maxHeight: "380px", objectFit: "cover" }} />
             </div>
           </motion.div>
@@ -59,12 +59,12 @@ export function TrommelScreensPage() {
       <Section bg="#F5F4EF">
         <div className="text-center mb-10"><SectionLabel label="Innovative Features" /></div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {features.map((f, i) => <FeatureCard key={i} title={f.title} description={f.desc} icon={f.icon} />)}
+          {features.map((f, i) => <FeatureCard key={i} title={f.title} description={f.desc} icon={f.icon} centered />)}
         </div>
       </Section>
 
       <Section>
-        <SectionLabel label="Key Benefits" />
+        <div className="text-center mb-2"><SectionLabel label="Key Benefits" /></div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
           {benefits.map((b, i) => (
             <div key={i} className="flex items-start gap-3 p-4" style={{ border: "1px solid rgba(23,139,76,0.12)" }}>
@@ -76,7 +76,7 @@ export function TrommelScreensPage() {
       </Section>
 
       <Section bg="#F5F4EF">
-        <SectionLabel label="Technical Data" />
+        <div className="text-center mb-2"><SectionLabel label="Technical Data" /></div>
         <div className="mt-4"><SpecsTable headers={specs.headers} rows={specs.rows} /></div>
       </Section>
 
@@ -96,7 +96,6 @@ export function TrommelScreensPage() {
         { src: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=400&h=400&fit=crop&auto=format", caption: "Processing Facility" },
       ]} />
       <Testimonials />
-      <IndustriesServed />
       <PageCTA />
     </PageLayout>
   );

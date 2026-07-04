@@ -1,3 +1,5 @@
 node_modules
 dist
-.envdist/
+.env
+.vercel
+src.zip

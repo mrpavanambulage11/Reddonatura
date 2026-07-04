@@ -185,7 +185,7 @@ export function LeadFormModal({ open, onClose }: Props) {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 0.25 }}
         className="relative w-full max-w-2xl max-h-[92vh] overflow-y-auto"
-        style={{ backgroundColor: "#fff" }}
+        style={{ backgroundColor: "#fff", boxShadow: "0 40px 80px rgba(5,49,20,0.35)" }}
         onClick={e => e.stopPropagation()}
       >
         {/* Golden top accent */}
@@ -244,9 +244,9 @@ export function LeadFormModal({ open, onClose }: Props) {
               ))}
             </div>
             <button onClick={reset}
-              className="px-8 py-3 text-[11px] tracking-[0.14em] uppercase hover:bg-[#0B6E30] transition-colors"
+              className="px-8 py-3 text-[11px] tracking-[0.14em] uppercase hover:bg-[#0B6E30] transition-all duration-200 hover:-translate-y-0.5"
               style={{ backgroundColor: "#0D8239", color: "#fff",
-                fontFamily: "'DM Sans', sans-serif", fontWeight: 600 }}>
+                fontFamily: "'DM Sans', sans-serif", fontWeight: 600, boxShadow: "0 10px 24px rgba(13,130,57,0.3)" }}>
               Close
             </button>
           </div>
@@ -288,7 +288,7 @@ export function LeadFormModal({ open, onClose }: Props) {
                   }}>
                     {q.question.split(" ").map((word, i) =>
                       i === 0
-                        ? <em key={i} style={{ fontStyle: "italic", color: "#0D8239" }}>{word} </em>
+                        ? <em key={i} style={{ fontStyle: "normal", color: "#0D8239" }}>{word} </em>
                         : word + " "
                     )}
                   </h2>
@@ -305,10 +305,11 @@ export function LeadFormModal({ open, onClose }: Props) {
                         <button
                           key={o.label}
                           onClick={() => setAnswer(o.label)}
-                          className="text-left p-3.5 transition-all duration-150"
+                          className="text-left p-3.5 transition-all duration-200 hover:-translate-y-0.5"
                           style={{
                             border: selected ? "2px solid #0D8239" : "1.5px solid rgba(12,26,13,0.11)",
                             backgroundColor: selected ? "rgba(13,130,57,0.06)" : "#fafaf8",
+                            boxShadow: selected ? "0 8px 20px rgba(13,130,57,0.18)" : "none",
                           }}
                         >
                           <div className="flex items-start justify-between gap-1">
@@ -338,7 +339,7 @@ export function LeadFormModal({ open, onClose }: Props) {
                   <div className="flex justify-between">
                     {step > 0 ? (
                       <button onClick={() => setStep(s => s - 1)}
-                        className="inline-flex items-center gap-2 px-6 py-2.5 text-[11px] tracking-[0.12em] uppercase transition-colors"
+                        className="inline-flex items-center gap-2 px-6 py-2.5 text-[11px] tracking-[0.12em] uppercase transition-all duration-200 hover:-translate-y-0.5 hover:border-[#178B4C] hover:text-[#178B4C]"
                         style={{ border: "1.5px solid rgba(12,26,13,0.14)", color: "#5A6B5C",
                           fontFamily: "'DM Sans', sans-serif", fontWeight: 600 }}>
                         <ArrowLeft className="w-3.5 h-3.5" /> Back
@@ -347,9 +348,9 @@ export function LeadFormModal({ open, onClose }: Props) {
                     <button
                       disabled={!answers[step]}
                       onClick={() => setStep(s => s + 1)}
-                      className="inline-flex items-center gap-2 px-7 py-2.5 text-[11px] tracking-[0.12em] uppercase transition-colors disabled:opacity-30"
+                      className="inline-flex items-center gap-2 px-7 py-2.5 text-[11px] tracking-[0.12em] uppercase transition-all duration-200 disabled:opacity-30 enabled:hover:-translate-y-0.5"
                       style={{ backgroundColor: "#0D8239", color: "#fff",
-                        fontFamily: "'DM Sans', sans-serif", fontWeight: 600 }}>
+                        fontFamily: "'DM Sans', sans-serif", fontWeight: 600, boxShadow: "0 8px 20px rgba(13,130,57,0.3)" }}>
                       Next <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                   </div>
@@ -364,7 +365,7 @@ export function LeadFormModal({ open, onClose }: Props) {
                   fontFamily: "'Playfair Display', serif", fontWeight: 700,
                   fontSize: "clamp(1.2rem, 2.8vw, 1.6rem)", color: "#0C1A0D", lineHeight: 1.25,
                 }}>
-                  <em style={{ fontStyle: "italic", color: "#0D8239" }}>Almost</em> there — tell us about yourself
+                  <em style={{ fontStyle: "normal", color: "#0D8239" }}>Almost</em> there — tell us about yourself
                 </h2>
                 <p className="mb-5" style={{
                   fontFamily: "'DM Sans', sans-serif", fontWeight: 300,
@@ -446,9 +447,9 @@ export function LeadFormModal({ open, onClose }: Props) {
                       <ArrowLeft className="w-3.5 h-3.5" /> Back
                     </button>
                     <button type="submit"
-                      className="inline-flex items-center gap-2 px-8 py-2.5 text-[11px] tracking-[0.12em] uppercase hover:bg-[#0B6E30] transition-colors"
+                      className="inline-flex items-center gap-2 px-8 py-2.5 text-[11px] tracking-[0.12em] uppercase hover:bg-[#0B6E30] transition-all duration-200 hover:-translate-y-0.5"
                       style={{ backgroundColor: "#0D8239", color: "#fff",
-                        fontFamily: "'DM Sans', sans-serif", fontWeight: 600 }}>
+                        fontFamily: "'DM Sans', sans-serif", fontWeight: 600, boxShadow: "0 8px 20px rgba(13,130,57,0.3)" }}>
                       Submit Request <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                   </div>

@@ -43,10 +43,10 @@ const logos = [
   { src: logoPrestige, name: "Prestige" },
 ];
 
-const CARD_W   = 200; // px — logo card width
-const CARD_GAP = 28;  // px — gap between cards
+const CARD_W   = 150; // px — logo card width
+const CARD_GAP = 20;  // px — gap between cards
 const STEP     = CARD_W + CARD_GAP;
-const SPEED    = 0.55; // px per frame
+const SPEED    = 1.1; // px per frame
 
 // Triple so we can move left & right without ever running out of content
 const track = [...logos, ...logos, ...logos];
@@ -128,16 +128,17 @@ export function Clients() {
           initial={{ opacity: 0, y: 12 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
-          className="pt-20 pb-12 flex flex-col sm:flex-row sm:items-end justify-between gap-5"
+          className="pt-20 pb-12 grid sm:grid-cols-3 items-center gap-5"
         >
-          <div className="flex items-end gap-4">
-            
-           
+          <div className="hidden sm:block" />
+          <div className="order-1 sm:order-2 flex items-end justify-center gap-4">
+
+
               <div className="text-center">
   <span
     style={{
       fontFamily: "'Playfair Display', Georgia, serif",
-      fontStyle: "italic",
+      //fontStyle: "normal",
       fontWeight: 400,
       fontSize: "clamp(2rem, 3.5vw, 3rem)",
       color: "#e6eeea",
@@ -150,14 +151,14 @@ export function Clients() {
   <span
     style={{
       fontFamily: "'Playfair Display', Georgia, serif",
-      fontStyle: "italic",
+      //fontStyle: "normal",
       fontWeight: 400,
       fontSize: "clamp(2rem, 3.5vw, 3rem)",
       color: "#A0780E",
       lineHeight: 1,
     }}
   >
-    Clients &<br className="sm:hidden" />
+    Clients & <br className="sm:hidden" />
     <span className="sm:inline block">Partners</span>
   </span>
 </div>
@@ -165,10 +166,10 @@ export function Clients() {
           </div>
 
           {/* Arrow controls */}
-          <div className="flex items-center gap-3">
+          <div className="order-2 sm:order-3 flex items-center justify-center sm:justify-end gap-3">
             <button
               onClick={goLeft}
-              className="w-10 h-10 flex items-center justify-center transition-all duration-200 hover:scale-110"
+              className="arrow-control w-10 h-10 flex items-center justify-center"
               style={{
                 border: "1px solid rgba(245,240,232,0.15)",
                 backgroundColor: "rgba(245,240,232,0.04)",
@@ -180,7 +181,7 @@ export function Clients() {
             </button>
             <button
               onClick={goRight}
-              className="w-10 h-10 flex items-center justify-center transition-all duration-200 hover:scale-110"
+              className="arrow-control w-10 h-10 flex items-center justify-center"
               style={{
                 border: "1px solid rgba(245,240,232,0.15)",
                 backgroundColor: "rgba(245,240,232,0.04)",
@@ -227,20 +228,25 @@ export function Clients() {
           {track.map((logo, i) => (
             <div
               key={i}
-              className="flex-shrink-0 flex items-center justify-center"
+              className="flex-shrink-0 flex items-center justify-center rounded-2xl transition-all duration-300 hover:-translate-y-1"
               style={{
-                width: `${CARD_W}px`,
-                height: "100px",
-                backgroundColor: "#ffffff",
-                padding: "12px 16px",
-              }}
+  width: `${CARD_W}px`,
+  height: "100px",
+  backgroundColor: "#F5F4EF",
+  border: "1px solid rgba(5,49,20,0.08)",
+  boxShadow: "0 4px 16px rgba(0,0,0,0.06)",
+  padding: "14px 16px",
+}}
             >
               <img
                 src={logo.src}
                 alt={logo.name}
                 draggable={false}
-                className="max-w-full max-h-full object-contain"
-                style={{ userSelect: "none" }}
+                className="max-w-full object-contain transition-transform duration-300 hover:scale-105"
+                style={{
+                  userSelect: "none",
+                  maxHeight: "40px",
+                }}
               />
             </div>
           ))}

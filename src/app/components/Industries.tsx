@@ -86,7 +86,7 @@ export function Industries() {
             <span
               style={{
                 fontFamily: "'Playfair Display', Georgia, serif",
-                fontStyle: "italic",
+               // fontStyle: "normal",
                 fontWeight: 400,
                 fontSize: "clamp(2.2rem, 3.5vw, 3.5rem)",
                 color: "#0D8239",
@@ -99,7 +99,7 @@ export function Industries() {
                <span
               style={{
                 fontFamily: "'Playfair Display', Georgia, serif",
-                fontStyle: "italic",
+                //fontStyle: "normal",
                 fontWeight: 400,
                 fontSize: "clamp(2.2rem, 3.5vw, 3rem)",
                 color: "#A0780E",
@@ -145,7 +145,7 @@ export function Industries() {
       </div>
 
       {/* Full-width image grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5" style={{ backgroundColor: "#0B1F10" }}>
         {industries.map((industry, i) => (
           <motion.div
             key={industry.name}
@@ -153,7 +153,7 @@ export function Industries() {
             animate={inView ? { opacity: 1 } : {}}
             transition={{ duration: 0.5, delay: 0.04 * i }}
             className="group relative overflow-hidden cursor-pointer"
-            style={{ aspectRatio: "1/1.2" }}
+            style={{ aspectRatio: "1/1.2", backgroundColor: "#0B1F10" }}
           >
             {/* Background image */}
             <ImageWithFallback

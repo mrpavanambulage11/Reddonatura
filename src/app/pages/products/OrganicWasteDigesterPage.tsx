@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { PageLayout, Section, SectionLabel, FeatureCard, SpecsTable, FAQItem, IndustriesServed, PageCTA, Testimonials, MachineGallery } from "../PageLayout";
+import { PageLayout, Section, SectionLabel, FeatureCard, SpecsTable, FAQAccordion, PageCTA, Testimonials, MachineGallery } from "../PageLayout";
 import { Zap, Settings, Leaf, CheckCircle2 } from "lucide-react";
 import img1 from "../../../imports/image-1.png";
 
@@ -53,7 +53,7 @@ export function OrganicWasteDigesterPage() {
       <Section>
         <div className="grid lg:grid-cols-2 gap-14 items-center">
           <motion.div initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-            <SectionLabel label="rNature Series" />
+            <div className="text-center"><SectionLabel label="rNature Series" /></div>
             <p className="mb-5" style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: "0.975rem", color: "#5A6B5C", lineHeight: 1.8 }}>
               Embrace sustainability with our pioneering Organic Waste Management Solutions, designed to address the full spectrum of organic waste including food waste, garden trimmings, and agricultural residues.
             </p>
@@ -70,7 +70,7 @@ export function OrganicWasteDigesterPage() {
             </div>
           </motion.div>
           <motion.div initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}>
-            <div style={{ border: "2px solid #178B4C", overflow: "hidden" }}>
+            <div style={{ border: "2px solid #178B4C", overflow: "hidden", boxShadow: "0 20px 45px rgba(5,49,20,0.15)" }}>
               <img src={img1} alt="rNature Organic Waste Digester" className="w-full" style={{ maxHeight: "380px", objectFit: "cover" }} />
             </div>
           </motion.div>
@@ -83,12 +83,12 @@ export function OrganicWasteDigesterPage() {
           <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: "1rem", color: "#5A6B5C", maxWidth: "480px", margin: "0 auto" }}>With R-Nature, you don't get just a machine.</p>
         </div>
         <div className="grid sm:grid-cols-3 gap-5">
-          {features.map((f, i) => <FeatureCard key={i} title={f.title} description={f.desc} icon={f.icon} />)}
+          {features.map((f, i) => <FeatureCard key={i} title={f.title} description={f.desc} icon={f.icon} centered />)}
         </div>
       </Section>
 
       <Section>
-        <SectionLabel label="Key Benefits" />
+        <div className="text-center mb-2"><SectionLabel label="Key Benefits" /></div>
         <div className="grid sm:grid-cols-2 gap-4 mt-2">
           {benefits.map((b, i) => (
             <div key={i} className="flex items-start gap-3 p-4" style={{ border: "1px solid rgba(23,139,76,0.12)" }}>
@@ -100,7 +100,7 @@ export function OrganicWasteDigesterPage() {
       </Section>
 
       <Section bg="#F5F4EF">
-        <SectionLabel label="Our Models" />
+        <div className="text-center mb-2"><SectionLabel label="Our Models" /></div>
         <div className="grid grid-cols-4 lg:grid-cols-8 gap-3 mt-4">
           {["RN 25","RN 75","RN 125","RN 250","RN 500","RN 700","RN 1000","RN 1250"].map(m => (
             <div key={m} className="text-center py-4 px-2" style={{ backgroundColor: "#053114" }}>
@@ -111,14 +111,14 @@ export function OrganicWasteDigesterPage() {
       </Section>
 
       <Section>
-        <SectionLabel label="Specifications" />
+        <div className="text-center mb-2"><SectionLabel label="Specifications" /></div>
         <div className="mt-4"><SpecsTable headers={specs.headers} rows={specs.rows} /></div>
       </Section>
 
       <Section bg="#F5F4EF">
-        <SectionLabel label="FAQ" />
-        <div className="mt-4 max-w-3xl">
-          {faqs.map((f, i) => <FAQItem key={i} question={f.q} answer={f.a} />)}
+        <div className="text-center mb-2"><SectionLabel label="FAQ" /></div>
+        <div className="mt-4 max-w-3xl mx-auto">
+          <FAQAccordion items={faqs} />
         </div>
       </Section>
 
@@ -129,7 +129,6 @@ export function OrganicWasteDigesterPage() {
         { src: "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=400&h=400&fit=crop&auto=format", caption: "Compost Output" },
       ]} />
       <Testimonials />
-      <IndustriesServed />
       <PageCTA />
     </PageLayout>
   );

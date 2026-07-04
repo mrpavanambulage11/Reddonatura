@@ -1,7 +1,82 @@
-import { useState } from "react";
-import { motion } from "motion/react";
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Quote } from "lucide-react";
+import { ArrowRight, Quote, Plus, X } from "lucide-react";
+
+/**
+ * Drop-in animated counter — parses the leading number out of a string like
+ * "7,000+" or "60–70%" and counts up to it once the element scrolls into view.
+ * Non-numeric strings (e.g. "24/7") are rendered as-is.
+ */
+export function AnimatedNumber({ value, duration = 1600 }: { value: string; duration?: number }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [inView, setInView] = useState(false);
+  const [count, setCount] = useState(0);
+
+  const match = value.match(/[\d,]+(\.\d+)?/);
+  const target = match ? parseFloat(match[0].replace(/,/g, "")) : null;
+  const prefix = match ? value.slice(0, match.index) : "";
+  const suffix = match ? value.slice((match.index ?? 0) + match[0].length) : "";
+  const decimals = match?.[1]?.length ? match[1].length - 1 : 0;
+
+  useEffect(() => {
+    if (target === null) return;
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setInView(true); },
+      { threshold: 0.4 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [target]);
+
+  useEffect(() => {
+    if (!inView || target === null) return;
+    let start: number | null = null;
+    let raf: number;
+    const step = (ts: number) => {
+      if (start === null) start = ts;
+      const progress = Math.min((ts - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(eased * target);
+      if (progress < 1) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [inView, target, duration]);
+
+  if (target === null) return <span>{value}</span>;
+
+  return (
+    <span ref={ref}>
+      {prefix}
+      {count.toLocaleString(undefined, { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}
+      {suffix}
+    </span>
+  );
+}
+
+export function usePageMeta(title: string, description: string) {
+  useEffect(() => {
+    const prevTitle = document.title;
+    document.title = title;
+
+    let meta = document.querySelector('meta[name="description"]') as HTMLMetaElement | null;
+    const prevDescription = meta?.getAttribute("content") ?? null;
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.name = "description";
+      document.head.appendChild(meta);
+    }
+    meta.setAttribute("content", description);
+
+    return () => {
+      document.title = prevTitle;
+      if (meta && prevDescription !== null) meta.setAttribute("content", prevDescription);
+    };
+  }, [title, description]);
+}
 
 interface PageLayoutProps {
   title: string;
@@ -58,8 +133,8 @@ export function Section({ children, bg = "#ffffff", className = "" }: { children
 export function SectionLabel({ label }: { label: string }) {
   const parts = label.split(" ");
   return (
-    <div className="flex items-end gap-3 mb-6">
-      <span style={{ fontFamily: "'Playfair Display', Georgia, serif", fontStyle: "italic", fontWeight: 400, fontSize: "clamp(1.6rem, 3vw, 2.2rem)", color: "#178B4C", lineHeight: 1 }}>
+    <div className="inline-flex items-end gap-3 mb-6">
+      <span style={{ fontFamily: "'Playfair Display', Georgia, serif", fontStyle: "normal", fontWeight: 400, fontSize: "clamp(1.6rem, 3vw, 2.2rem)", color: "#178B4C", lineHeight: 1 }}>
         {parts[0]}
       </span>
       {parts.length > 1 && (
@@ -71,25 +146,30 @@ export function SectionLabel({ label }: { label: string }) {
   );
 }
 
-export function FeatureCard({ title, description, icon }: { title: string; description: string; icon?: React.ReactNode }) {
+export function FeatureCard({ title, description, icon, centered }: { title: string; description: string; icon?: React.ReactNode; centered?: boolean }) {
   return (
     <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4 }}
-      className="p-6" style={{ border: "1px solid rgba(23,139,76,0.15)", backgroundColor: "#ffffff" }}>
-      {icon && <div className="mb-4" style={{ color: "#178B4C" }}>{icon}</div>}
-      <h3 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 600, fontSize: "1rem", color: "#053114", marginBottom: "8px" }}>{title}</h3>
-      <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: "0.875rem", color: "#5A6B5C", lineHeight: 1.65 }}>{description}</p>
+      className={`group rn-card-shadow rounded-2xl p-7 hover:-translate-y-2 hover:scale-[1.02] ${centered ? "text-center" : ""}`}
+      style={{ border: "1px solid rgba(23,139,76,0.14)", backgroundColor: "#ffffff" }}>
+      {icon && (
+        <div className={`feature-icon mb-5 inline-flex items-center justify-center w-12 h-12 rounded-full ${centered ? "mx-auto" : ""}`} style={{ color: "#178B4C" }}>
+          {icon}
+        </div>
+      )}
+      <h3 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 600, fontSize: "1.05rem", color: "#053114", marginBottom: "10px" }}>{title}</h3>
+      <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: "0.875rem", color: "#5A6B5C", lineHeight: 1.7 }}>{description}</p>
     </motion.div>
   );
 }
 
 export function SpecsTable({ headers, rows }: { headers: string[]; rows: (string | React.ReactNode)[][] }) {
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto" style={{ border: "1px solid rgba(5,49,20,0.08)", boxShadow: "0 1px 2px rgba(5,49,20,0.04), 0 16px 32px rgba(5,49,20,0.06)" }}>
       <table className="w-full border-collapse text-left" style={{ minWidth: "600px" }}>
         <thead>
           <tr style={{ backgroundColor: "#053114" }}>
             {headers.map((h, i) => (
-              <th key={i} className="px-4 py-3 text-[11px] tracking-[0.1em] uppercase"
+              <th key={i} className="px-4 py-3.5 text-[11px] tracking-[0.1em] uppercase"
                 style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, color: "#ffffff", borderRight: "1px solid rgba(255,255,255,0.1)" }}>
                 {h}
               </th>
@@ -98,9 +178,9 @@ export function SpecsTable({ headers, rows }: { headers: string[]; rows: (string
         </thead>
         <tbody>
           {rows.map((row, i) => (
-            <tr key={i} style={{ backgroundColor: i % 2 === 0 ? "#ffffff" : "#F5F4EF", borderBottom: "1px solid rgba(5,49,20,0.06)" }}>
+            <tr key={i} className="transition-colors duration-150 hover:bg-[rgba(23,139,76,0.06)]" style={{ backgroundColor: i % 2 === 0 ? "#ffffff" : "#F5F4EF", borderBottom: "1px solid rgba(5,49,20,0.06)" }}>
               {row.map((cell, j) => (
-                <td key={j} className="px-4 py-3"
+                <td key={j} className="px-4 py-3.5"
                   style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.85rem", color: "#053114", borderRight: "1px solid rgba(5,49,20,0.06)" }}>
                   {cell}
                 </td>
@@ -113,19 +193,96 @@ export function SpecsTable({ headers, rows }: { headers: string[]; rows: (string
   );
 }
 
-export function FAQItem({ question, answer }: { question: string; answer: string }) {
-  const [open, setOpen] = useState(false);
+export function FAQItem({
+  question, answer, index, isOpen, onToggle,
+}: {
+  question: string;
+  answer: string;
+  index?: number;
+  isOpen?: boolean;
+  onToggle?: () => void;
+}) {
+  const [localOpen, setLocalOpen] = useState(false);
+  const open = isOpen !== undefined ? isOpen : localOpen;
+  const toggle = onToggle ?? (() => setLocalOpen((o) => !o));
+
   return (
-    <div style={{ borderBottom: "1px solid rgba(5,49,20,0.1)" }}>
-      <button className="w-full flex items-center justify-between py-4 text-left hover:text-[#178B4C] transition-colors" onClick={() => setOpen(!open)}>
-        <span style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 500, fontSize: "0.95rem", color: "inherit" }}>{question}</span>
-        <span style={{ color: "#178B4C", fontSize: "1.2rem", lineHeight: 1, flexShrink: 0, marginLeft: "12px" }}>{open ? "−" : "+"}</span>
+    <div
+      className="mb-4 p-6 transition-all duration-300"
+      style={{
+        borderRadius: "1rem",
+        border: open ? "1.5px solid rgba(23,139,76,0.35)" : "1px solid rgba(5,49,20,0.1)",
+        backgroundColor: "#ffffff",
+        boxShadow: open
+          ? "0 4px 10px rgba(5,49,20,0.06), 0 20px 40px rgba(5,49,20,0.1)"
+          : "0 1px 2px rgba(5,49,20,0.04), 0 12px 28px rgba(5,49,20,0.05)",
+      }}
+    >
+      <button className="w-full flex items-center gap-4 text-left" onClick={toggle}>
+        {index !== undefined && (
+          <span
+            className="transition-colors duration-300"
+            style={{
+              fontFamily: "'DM Mono', monospace",
+              fontWeight: 700,
+              fontSize: "0.8rem",
+              color: open ? "#178B4C" : "#B7C2B8",
+              flexShrink: 0,
+              minWidth: "22px",
+            }}
+          >
+            {String(index + 1).padStart(2, "0")}
+          </span>
+        )}
+        <span className="flex-1" style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: "1rem", color: "#053114" }}>{question}</span>
+        <span
+          className="flex-shrink-0 flex items-center justify-center rounded-full transition-all duration-300"
+          style={{
+            width: "32px",
+            height: "32px",
+            backgroundColor: open ? "#178B4C" : "transparent",
+            border: open ? "none" : "1.5px solid rgba(5,49,20,0.18)",
+            color: open ? "#ffffff" : "#053114",
+            boxShadow: open ? "0 8px 18px rgba(23,139,76,0.35)" : "none",
+          }}
+        >
+          {open ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+        </span>
       </button>
-      {open && (
-        <div className="pb-4">
-          <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: "0.9rem", color: "#5A6B5C", lineHeight: 1.7 }}>{answer}</p>
-        </div>
-      )}
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            key="answer"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ height: { duration: 0.35, ease: [0.22, 1, 0.36, 1] }, opacity: { duration: 0.25 } }}
+            style={{ overflow: "hidden" }}
+          >
+            <div className="pt-4 pl-9">
+              <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: "0.9rem", color: "#5A6B5C", lineHeight: 1.75 }}>{answer}</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+export function FAQAccordion({ items }: { items: { q: string; a: string }[] }) {
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  return (
+    <div>
+      {items.map((item, i) => (
+        <FAQItem
+          key={i}
+          index={i}
+          question={item.q}
+          answer={item.a}
+          isOpen={openIndex === i}
+          onToggle={() => setOpenIndex(openIndex === i ? null : i)}
+        />
+      ))}
     </div>
   );
 }
@@ -138,7 +295,7 @@ export function IndustriesServed() {
       <div className="max-w-7xl mx-auto px-6 py-14">
         <div className="text-center mb-10">
           <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700, fontSize: "clamp(1.5rem, 2.5vw, 2.2rem)", color: "#ffffff" }}>
-            Industries <em style={{ color: "#A0780E", fontStyle: "italic" }}>We Serve</em>
+            Industries <em style={{ color: "#A0780E", fontStyle: "normal" }}>We Serve</em>
           </h2>
           <p className="mt-3 max-w-xl mx-auto" style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: "0.9rem", color: "rgba(255,255,255,0.6)" }}>
             Our eco-solutions are deployed across a broad spectrum of industries.
@@ -169,7 +326,7 @@ export function Testimonials() {
       <div className="max-w-7xl mx-auto px-6 py-16 md:py-20">
         <div className="text-center mb-12">
           <div className="flex items-end gap-3 mb-4 justify-center">
-            <span style={{ fontFamily: "'Playfair Display', Georgia, serif", fontStyle: "italic", fontWeight: 400, fontSize: "clamp(1.6rem, 3vw, 2.2rem)", color: "#178B4C", lineHeight: 1 }}>Client</span>
+            <span style={{ fontFamily: "'Playfair Display', Georgia, serif", fontStyle: "normal", fontWeight: 400, fontSize: "clamp(1.6rem, 3vw, 2.2rem)", color: "#178B4C", lineHeight: 1 }}>Client</span>
             <span style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: "13px", letterSpacing: "0.2em", textTransform: "uppercase", color: "#A0780E", paddingBottom: "4px" }}>Testimonials</span>
           </div>
           <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: "1rem", color: "#5A6B5C", maxWidth: "480px", margin: "0 auto" }}>
@@ -179,9 +336,9 @@ export function Testimonials() {
         <div className="grid sm:grid-cols-3 gap-6">
           {testimonials.map((t, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.45, delay: 0.1 * i }}
-              className="p-7 flex flex-col" style={{ backgroundColor: "#ffffff", border: "1px solid rgba(23,139,76,0.15)" }}>
+              className="rn-card-shadow p-7 flex flex-col hover:-translate-y-1" style={{ backgroundColor: "#ffffff", border: "1px solid rgba(23,139,76,0.15)" }}>
               <Quote className="w-7 h-7 mb-4 flex-shrink-0" style={{ color: "#A0780E" }} />
-              <p className="flex-1 mb-6" style={{ fontFamily: "'DM Sans', sans-serif", fontStyle: "italic", fontWeight: 300, fontSize: "0.9rem", color: "#5A6B5C", lineHeight: 1.75 }}>
+              <p className="flex-1 mb-6" style={{ fontFamily: "'DM Sans', sans-serif", fontStyle: "normal", fontWeight: 300, fontSize: "0.9rem", color: "#5A6B5C", lineHeight: 1.75 }}>
                 "{t.text}"
               </p>
               <div>
@@ -201,13 +358,13 @@ export function MachineGallery({ images }: { images: { src: string; caption?: st
     <section style={{ backgroundColor: "#ffffff" }}>
       <div className="max-w-7xl mx-auto px-6 py-16 md:py-20">
         <div className="flex items-end gap-3 mb-10">
-          <span style={{ fontFamily: "'Playfair Display', Georgia, serif", fontStyle: "italic", fontWeight: 400, fontSize: "clamp(1.6rem, 3vw, 2.2rem)", color: "#178B4C", lineHeight: 1 }}>Machine</span>
+          <span style={{ fontFamily: "'Playfair Display', Georgia, serif", fontStyle: "normal", fontWeight: 400, fontSize: "clamp(1.6rem, 3vw, 2.2rem)", color: "#178B4C", lineHeight: 1 }}>Machine</span>
           <span style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: "13px", letterSpacing: "0.2em", textTransform: "uppercase", color: "#A0780E", paddingBottom: "4px" }}>Gallery</span>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {images.map((img, i) => (
             <motion.div key={i} initial={{ opacity: 0, scale: 0.97 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.06 * i }}
-              className="overflow-hidden group" style={{ border: "1px solid rgba(23,139,76,0.15)", aspectRatio: "1/1" }}>
+              className="rn-card-shadow overflow-hidden group hover:-translate-y-1" style={{ border: "1px solid rgba(23,139,76,0.15)", aspectRatio: "1/1" }}>
               <img src={img.src} alt={img.caption || "Machine"} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
               {img.caption && (
                 <div className="px-3 py-2" style={{ backgroundColor: "#053114" }}>
@@ -229,7 +386,7 @@ export function PageCTA() {
       <div className="max-w-7xl mx-auto px-6 py-14 flex flex-col md:flex-row items-center justify-between gap-8">
         <div>
           <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700, fontSize: "clamp(1.4rem, 2.5vw, 2rem)", color: "#ffffff" }}>
-            Ready to get <em style={{ color: "#A0780E", fontStyle: "italic" }}>started?</em>
+            Ready to get <em style={{ color: "#A0780E", fontStyle: "normal" }}>started?</em>
           </h2>
           <p className="mt-2" style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: "0.95rem", color: "rgba(255,255,255,0.7)" }}>
             Talk to our experts and get a tailored solution for your specific requirements.
@@ -237,14 +394,19 @@ export function PageCTA() {
         </div>
         <div className="flex flex-wrap gap-4 flex-shrink-0">
           <button onClick={openForm}
-            className="px-7 py-3 text-[11px] tracking-[0.12em] uppercase hover:opacity-90 transition-opacity"
-            style={{ backgroundColor: "#178B4C", color: "#ffffff", fontFamily: "'DM Sans', sans-serif", fontWeight: 600 }}>
+            className="group inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-[11px] tracking-[0.12em] uppercase transition-all duration-200 hover:-translate-y-1 hover:scale-[1.03]"
+            style={{
+              backgroundColor: "#178B4C", color: "#ffffff", fontFamily: "'DM Sans', sans-serif", fontWeight: 600,
+              boxShadow: "0 10px 26px rgba(23,139,76,0.4)",
+            }}>
             Get a Free Quote
+            <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" />
           </button>
           <Link to="/contact"
-            className="px-7 py-3 text-[11px] tracking-[0.12em] uppercase hover:opacity-90 transition-opacity"
+            className="group inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-[11px] tracking-[0.12em] uppercase transition-all duration-200 hover:-translate-y-1 hover:scale-[1.03] hover:bg-white/5"
             style={{ border: "1.5px solid rgba(255,255,255,0.4)", color: "#ffffff", fontFamily: "'DM Sans', sans-serif", fontWeight: 600 }}>
             Contact Us
+            <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" />
           </Link>
         </div>
       </div>

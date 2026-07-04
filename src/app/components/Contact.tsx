@@ -10,135 +10,15 @@ export function Contact({ onOpenForm }: { onOpenForm: () => void }) {
   return (
     <>
       {/* ── World Presence Map ───────────────────────── */}
-      <section style={{ backgroundColor: "#023306" }}>
-        <div className="max-w-7xl mx-auto px-6">
-          {/* Section label */}
-          <motion.div
-            ref={ref}
-            initial={{ opacity: 0, y: 12 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5 }}
-            className="pt-20 pb-10 flex flex-col sm:flex-row sm:items-end justify-between gap-5"
-          >
-            <div className="flex items-end gap-4">
-              <span
-                style={{
-                  fontFamily: "'Playfair Display', Georgia, serif",
-                  fontStyle: "italic",
-                  fontWeight: 400,
-                  fontSize: "clamp(2rem, 3.5vw, 3rem)",
-                  color: "#e6eeea",
-                  lineHeight: 1,
-                }}
-              >
-                Global
-              </span>
-              <span
-                style={{
-                  fontFamily: "'Playfair Display', Georgia, serif",
-                  fontStyle: "italic",
-                  fontWeight: 400,
-                  fontSize: "clamp(2rem, 3.5vw, 3rem)",
-                  color: "#A0780E",
-                  lineHeight: 1,
-                }}
-              >
-                presence
-              </span>
-              
-            </div>
-            <p
-              className="max-w-sm"
-              style={{
-                fontFamily: "'DM Sans', sans-serif",
-                fontWeight: 500,
-                fontSize: "0.9rem",
-                color: "rgba(245,240,232,0.95)",
-                lineHeight: 1.7,
-              }}
-            >
-              Active operations across 20+ countries, with Bengaluru, India as our global headquarters.
-            </p>
-          </motion.div>
-        </div>
-
-        {/* Map */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 0.2 }}
-          className="relative w-full overflow-hidden"
-          style={{
-    backgroundColor: "#023306",
-    paddingBottom: "40px", // Add space below the image
-  }}
-        >
-          <img
-            src={worldMap}
-            alt="Reddonatura global operations map — 20+ countries"
-            className="w-full h-auto block"
-            style={{
-              filter: "brightness(1.1) saturate(1.3)",
-              maxHeight: "520px",
-              objectFit: "contain",
-            }}
-          />
-
-          {/* Floating stat pills over the map */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 w-full px-3 flex justify-center">
-            <div className="flex items-center gap-2 sm:gap-5">
-              {[
-                { value: "20+", label: "Countries" },
-                { value: "7,000+", label: "Clients" },
-                { value: "10+", label: "Industries" },
-              ].map((s, i) => (
-                <div
-                  key={i}
-                  className="flex items-center gap-1.5 sm:gap-3 px-3 sm:px-5 py-2 sm:py-3"
-                  style={{
-                    backgroundColor: "rgba(11,31,16,0.88)",
-                    border: "1px solid rgba(23,139,76,0.3)",
-                    backdropFilter: "blur(8px)",
-                  }}
-                >
-                  <span
-                    style={{
-                      fontFamily: "'Playfair Display', Georgia, serif",
-                      fontWeight: 700,
-                      fontSize: "clamp(1rem, 3vw, 1.4rem)",
-                      color: "#4ade80",
-                      lineHeight: 1,
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {s.value}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: "'DM Sans', sans-serif",
-                      fontWeight: 400,
-                      fontSize: "clamp(9px, 2vw, 11px)",
-                      letterSpacing: "0.1em",
-                      textTransform: "uppercase",
-                      color: "rgba(245,240,232,0.7)",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {s.label}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </motion.div>
-      </section>
+      
 
       {/* ── CTA Section ──────────────────────────────── */}
       <section
-        id="contact"
-        className="relative overflow-hidden"
-        style={{ backgroundColor: "#F5F4EF" }}
-      >
+  ref={ref}
+  id="contact"
+  className="relative overflow-hidden"
+  style={{ backgroundColor: "#F5F4EF" }}
+>
         {/* Decorative background circle */}
         <div
           className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full pointer-events-none"
@@ -163,7 +43,7 @@ export function Contact({ onOpenForm }: { onOpenForm: () => void }) {
                  <span
               style={{
                 fontFamily: "'Playfair Display', Georgia, serif",
-                fontStyle: "italic",
+                fontStyle: "normal",
                 fontWeight: 400,
                 fontSize: "clamp(2.2rem, 3.5vw, 3.5rem)",
                 color: "#0D8239",
@@ -176,7 +56,7 @@ export function Contact({ onOpenForm }: { onOpenForm: () => void }) {
                <span
               style={{
                 fontFamily: "'Playfair Display', Georgia, serif",
-                fontStyle: "italic",
+                fontStyle: "normal",
                 fontWeight: 400,
                 fontSize: "clamp(2.2rem, 3.5vw, 3rem)",
                 color: "#A0780E",
@@ -335,12 +215,13 @@ export function Contact({ onOpenForm }: { onOpenForm: () => void }) {
               <div className="flex flex-wrap gap-4">
                 <button
                   onClick={onOpenForm}
-                  className="group inline-flex items-center gap-3 px-8 py-4 text-[11.5px] tracking-[0.14em] uppercase transition-all duration-200 hover:bg-[#0B6E30]"
+                  className="group inline-flex items-center gap-3 px-8 py-4 text-[11.5px] tracking-[0.14em] uppercase transition-all duration-200 hover:bg-[#0B6E30] hover:-translate-y-0.5"
                   style={{
                     fontFamily: "'DM Sans', sans-serif",
                     fontWeight: 600,
                     backgroundColor: "#0D8239",
                     color: "#fff",
+                    boxShadow: "0 10px 28px rgba(13,130,57,0.3)",
                   }}
                 >
                   Get a Quote
@@ -372,6 +253,7 @@ export function Contact({ onOpenForm }: { onOpenForm: () => void }) {
   style={{
     backgroundColor: "#0B1F10",
     minHeight: "520px",
+    boxShadow: "0 30px 60px rgba(5,49,20,0.25)",
   }}
 >
   {/* Accent Line */}
@@ -393,7 +275,7 @@ export function Contact({ onOpenForm }: { onOpenForm: () => void }) {
   <blockquote
     style={{
       fontFamily: "'Playfair Display', Georgia, serif",
-      fontStyle: "italic",
+      fontStyle: "normal",
       fontWeight: 400,
       fontSize: "1.4rem",
       color: "#F5F0E8",

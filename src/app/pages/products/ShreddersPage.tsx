@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { PageLayout, Section, SectionLabel, FeatureCard, IndustriesServed, PageCTA, Testimonials, MachineGallery } from "../PageLayout";
+import { PageLayout, Section, SectionLabel, FeatureCard, PageCTA, Testimonials, MachineGallery } from "../PageLayout";
 import { Settings, Shield, Zap, RotateCcw, CheckCircle2 } from "lucide-react";
 import img5 from "../../../imports/image-5.png";
 
@@ -40,7 +40,7 @@ export function ShreddersPage() {
       <Section>
         <div className="grid lg:grid-cols-2 gap-14 items-center">
           <motion.div initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-            <SectionLabel label="Shredder Solutions" />
+            <div className="text-center"><SectionLabel label="Shredder Solutions" /></div>
             <p className="mb-6" style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: "0.975rem", color: "#5A6B5C", lineHeight: 1.8 }}>
               Our comprehensive range of shredders offers unparalleled efficiency in waste processing. From robust single shaft shredders to powerful four shaft and specialized wood chippers, each model is engineered with precision to meet diverse industrial needs.
             </p>
@@ -54,7 +54,7 @@ export function ShreddersPage() {
             </div>
           </motion.div>
           <motion.div initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}>
-            <div style={{ border: "2px solid #178B4C", overflow: "hidden" }}>
+            <div style={{ border: "2px solid #178B4C", overflow: "hidden", boxShadow: "0 20px 45px rgba(5,49,20,0.15)" }}>
               <img src={img5} alt="Industrial Shredder" className="w-full" style={{ maxHeight: "360px", objectFit: "cover" }} />
             </div>
           </motion.div>
@@ -64,12 +64,12 @@ export function ShreddersPage() {
       <Section bg="#F5F4EF">
         <div className="text-center mb-10"><SectionLabel label="Innovative Features" /></div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {features.map((f, i) => <FeatureCard key={i} title={f.title} description={f.desc} icon={f.icon} />)}
+          {features.map((f, i) => <FeatureCard key={i} title={f.title} description={f.desc} icon={f.icon} centered />)}
         </div>
       </Section>
 
       <Section>
-        <SectionLabel label="Key Benefits" />
+        <div className="text-center mb-2"><SectionLabel label="Key Benefits" /></div>
         <div className="grid sm:grid-cols-2 gap-4 mt-4">
           {benefits.map((b, i) => (
             <div key={i} className="flex items-start gap-3 p-4" style={{ border: "1px solid rgba(23,139,76,0.12)" }}>
@@ -81,11 +81,11 @@ export function ShreddersPage() {
       </Section>
 
       <Section bg="#F5F4EF">
-        <SectionLabel label="Our Models" />
+        <div className="text-center mb-2"><SectionLabel label="Our Models" /></div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-4">
           {models.map((m, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.1 * i }}
-              className="p-6" style={{ backgroundColor: "#053114" }}>
+              className="rn-card-shadow p-6 hover:-translate-y-1" style={{ backgroundColor: "#053114" }}>
               <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600, fontSize: "1rem", color: "#A0780E", marginBottom: "8px" }}>{m.name}</h3>
               <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: "0.825rem", color: "rgba(255,255,255,0.7)", lineHeight: 1.6 }}>{m.desc}</p>
             </motion.div>
@@ -100,7 +100,6 @@ export function ShreddersPage() {
         { src: "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?w=400&h=400&fit=crop&auto=format", caption: "Site Installation" },
       ]} />
       <Testimonials />
-      <IndustriesServed />
       <PageCTA />
     </PageLayout>
   );

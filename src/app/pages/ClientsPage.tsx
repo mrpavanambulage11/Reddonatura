@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { PageLayout, Section, SectionLabel, PageCTA } from "./PageLayout";
+import { PageLayout, Section, SectionLabel, FeatureCard, PageCTA } from "./PageLayout";
 import { Handshake, TrendingUp, Lightbulb, Star, Leaf } from "lucide-react";
 
 import logoIbis from "../../imports/IBIS.png";
@@ -69,12 +69,17 @@ export function ClientsPage() {
 
       <Section bg="#F5F4EF">
         <div className="text-center mb-10"><SectionLabel label="Trusted By" /></div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-8 gap-3">
           {logos.map((logo, i) => (
             <motion.div key={logo.name} initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.35, delay: 0.04 * i }}
-              className="flex items-center justify-center p-4"
-              style={{ backgroundColor: "#ffffff", border: "1px solid rgba(23,139,76,0.12)", height: "80px" }}>
-              <img src={logo.src} alt={logo.name} className="max-w-full max-h-full object-contain" style={{ maxHeight: "48px" }} />
+              className="flex items-center justify-center p-3 rounded-2xl transition-all duration-300 hover:-translate-y-1"
+              style={{ backgroundColor: "#ffffff", border: "1px solid rgba(23,139,76,0.12)", boxShadow: "0 4px 16px rgba(0,0,0,0.05)", height: "64px" }}>
+              <img
+                src={logo.src}
+                alt={logo.name}
+                className="max-w-full object-contain transition-transform duration-300 hover:scale-105"
+                style={{ maxHeight: "32px" }}
+              />
             </motion.div>
           ))}
         </div>
@@ -86,14 +91,7 @@ export function ClientsPage() {
       <Section>
         <div className="text-center mb-12"><SectionLabel label="Why Partners Choose Us" /></div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {pillars.map((p, i) => (
-            <motion.div key={p.title} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.07 * i }}
-              className="p-6" style={{ border: "1px solid rgba(23,139,76,0.15)", backgroundColor: "#ffffff" }}>
-              <div className="w-10 h-10 flex items-center justify-center mb-4" style={{ backgroundColor: "rgba(23,139,76,0.1)", color: "#178B4C" }}>{p.icon}</div>
-              <h3 className="mb-3" style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600, fontSize: "1rem", color: "#053114" }}>{p.title}</h3>
-              <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: "0.875rem", color: "#5A6B5C", lineHeight: 1.7 }}>{p.desc}</p>
-            </motion.div>
-          ))}
+          {pillars.map((p, i) => <FeatureCard key={i} title={p.title} description={p.desc} icon={p.icon} centered />)}
         </div>
       </Section>
       <PageCTA />

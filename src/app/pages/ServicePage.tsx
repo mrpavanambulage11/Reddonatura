@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import { PageLayout, Section, SectionLabel, FeatureCard, PageCTA } from "./PageLayout";
-import { CheckCircle2, Zap, Wrench, BarChart3, Clock, ShieldCheck } from "lucide-react";
+import { CheckCircle2, Zap, Wrench, BarChart3, Clock, ShieldCheck, ArrowRight } from "lucide-react";
+import teamImg from "../../imports/WhatsApp_Image_2026-06-22_at_5.48.15_PM.jpeg";
 
 const features = [
   { icon: <CheckCircle2 className="w-5 h-5" />, title: "Regular Inspection", desc: "We conduct regular inspections to ensure the smooth operation of your recycling plant, providing detailed mechanical and electrical inspection reports to identify any potential issues." },
@@ -27,7 +28,7 @@ export function ServicePage() {
       <Section>
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <motion.div initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-            <SectionLabel label="Highly Trained Teams" />
+            <div className="text-center"><SectionLabel label="Highly Trained Teams" /></div>
             <p className="mb-5" style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: "1rem", color: "#5A6B5C", lineHeight: 1.8 }}>
               Our team comprises highly trained and skilled engineers and electricians who are available on request to assist you with any queries or issues you may encounter. With years of experience in the industry, our experts are passionate about delivering top-notch solutions and professional service.
             </p>
@@ -37,8 +38,8 @@ export function ServicePage() {
           </motion.div>
           <motion.div initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}>
             <div style={{ border: "2px solid #178B4C", overflow: "hidden" }}>
-              <img src="https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?w=800&h=500&fit=crop&auto=format" alt="Service team"
-                className="w-full object-cover" style={{ height: "340px", objectFit: "cover" }} />
+              <img src={teamImg} alt="Reddonatura service team at our facility"
+                className="w-full object-cover" style={{ height: "340px", objectFit: "cover", objectPosition: "center 35%" }} />
             </div>
           </motion.div>
         </div>
@@ -52,7 +53,7 @@ export function ServicePage() {
           </p>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {features.map((f, i) => <FeatureCard key={i} title={f.title} description={f.desc} icon={f.icon} />)}
+          {features.map((f, i) => <FeatureCard key={i} title={f.title} description={f.desc} icon={f.icon} centered />)}
         </div>
       </Section>
 
@@ -66,11 +67,15 @@ export function ServicePage() {
         <div className="grid md:grid-cols-3 gap-6">
           {packages.map((pkg, i) => (
             <motion.div key={pkg.name} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.1 * i }}
-              className="flex flex-col p-7 relative"
-              style={{ border: pkg.highlighted ? "2px solid #178B4C" : "1px solid rgba(23,139,76,0.15)", backgroundColor: pkg.highlighted ? "#053114" : "#ffffff" }}>
+              className="group flex flex-col p-8 relative rounded-2xl transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02]"
+              style={{
+                border: pkg.highlighted ? "2px solid #178B4C" : "1px solid rgba(23,139,76,0.15)",
+                backgroundColor: pkg.highlighted ? "#053114" : "#ffffff",
+                boxShadow: pkg.highlighted ? "0 20px 45px rgba(5,49,20,0.35)" : "0 1px 2px rgba(5,49,20,0.04), 0 12px 28px rgba(5,49,20,0.05)",
+              }}>
               {pkg.highlighted && (
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 px-4 py-1 text-[10px] tracking-[0.15em] uppercase"
-                  style={{ backgroundColor: "#A0780E", color: "#fff", fontFamily: "'DM Sans', sans-serif", fontWeight: 600 }}>
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 px-5 py-1.5 rounded-full text-[10px] tracking-[0.15em] uppercase"
+                  style={{ backgroundColor: "#A0780E", color: "#fff", fontFamily: "'DM Sans', sans-serif", fontWeight: 600, boxShadow: "0 8px 20px rgba(160,120,14,0.4)" }}>
                   Recommended
                 </div>
               )}
@@ -83,9 +88,13 @@ export function ServicePage() {
                   </li>
                 ))}
               </ul>
-              <a href="mailto:info@reddonatura.com" className="block text-center py-3 text-[11px] tracking-[0.12em] uppercase hover:opacity-90 transition-opacity"
-                style={{ backgroundColor: pkg.highlighted ? "#178B4C" : "#053114", color: "#ffffff", fontFamily: "'DM Sans', sans-serif", fontWeight: 600 }}>
+              <a href="mailto:info@reddonatura.com" className="group/btn flex items-center justify-center gap-2 py-3 rounded-full text-[11px] tracking-[0.12em] uppercase transition-all duration-200 hover:-translate-y-0.5"
+                style={{
+                  backgroundColor: pkg.highlighted ? "#178B4C" : "#053114", color: "#ffffff", fontFamily: "'DM Sans', sans-serif", fontWeight: 600,
+                  boxShadow: pkg.highlighted ? "0 10px 26px rgba(23,139,76,0.35)" : "0 10px 26px rgba(5,49,20,0.3)",
+                }}>
                 Enquire Now
+                <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:translate-x-1" />
               </a>
             </motion.div>
           ))}
