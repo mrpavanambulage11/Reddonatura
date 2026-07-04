@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Phone, Mail, Bot, X, Sparkles } from "lucide-react";
+import { Phone, Mail, X, Send } from "lucide-react";
+import { getBotAnswer, suggestedQuestions } from "./chatbotKnowledge";
+import botAvatar from "../../imports/chatbot-avatar.png";
 
 const PHONE = "+917760987934";
 const EMAIL = "info@reddonatura.com";
@@ -49,10 +51,20 @@ const actions = [
   },
 ];
 
+type ChatMessage = { id: number; sender: "bot" | "user"; text: string };
+
+let msgId = 0;
+
 export function FloatingActions() {
   const [hovered, setHovered] = useState<string | null>(null);
   const [chatOpen, setChatOpen] = useState(false);
   const [showGreeting, setShowGreeting] = useState(false);
+  const [messages, setMessages] = useState<ChatMessage[]>([
+    { id: msgId++, sender: "bot", text: "Hi there! I'm the Reddonatura assistant 🤖 Ask me about our products, industries, pricing, or locations — I'm happy to help." },
+  ]);
+  const [draft, setDraft] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const showT = setTimeout(() => setShowGreeting(true), 2600);
@@ -60,9 +72,28 @@ export function FloatingActions() {
     return () => { clearTimeout(showT); clearTimeout(hideT); };
   }, []);
 
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages, isTyping]);
+
   const openLeadForm = () => {
     setChatOpen(false);
     window.dispatchEvent(new Event("openLeadForm"));
+  };
+
+  const sendMessage = (text: string) => {
+    const trimmed = text.trim();
+    if (!trimmed) return;
+    setMessages((m) => [...m, { id: msgId++, sender: "user", text: trimmed }]);
+    setDraft("");
+    setIsTyping(true);
+    const delay = 700 + Math.random() * 500;
+    setTimeout(() => {
+      setIsTyping(false);
+      setMessages((m) => [...m, { id: msgId++, sender: "bot", text: getBotAnswer(trimmed) }]);
+    }, delay);
   };
 
   return (
@@ -74,15 +105,15 @@ export function FloatingActions() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 14, scale: 0.94 }}
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="mb-1 w-[310px] max-w-[85vw] overflow-hidden rounded-[22px]"
-            style={{ backgroundColor: "#ffffff", boxShadow: "0 30px 70px rgba(5,49,20,0.4), 0 0 0 1px rgba(23,139,76,0.1)" }}
+            className="mb-1 w-[340px] max-w-[88vw] overflow-hidden rounded-[22px] flex flex-col"
+            style={{ backgroundColor: "#ffffff", boxShadow: "0 30px 70px rgba(5,49,20,0.4), 0 0 0 1px rgba(23,139,76,0.1)", maxHeight: "min(600px, 78vh)" }}
           >
-            <div className="relative overflow-hidden px-5 py-5" style={{ background: "linear-gradient(135deg, #0B1F10 0%, #0D8239 90%)" }}>
+            <div className="relative overflow-hidden px-5 py-4 flex-shrink-0" style={{ background: "linear-gradient(135deg, #0B1F10 0%, #0D8239 90%)" }}>
               <div className="absolute -top-8 -right-8 w-28 h-28 rounded-full" style={{ background: "radial-gradient(circle, rgba(217,182,92,0.35), transparent 70%)" }} />
               <div className="relative flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="relative flex items-center justify-center w-10 h-10 rounded-full" style={{ background: "linear-gradient(145deg, #D9B65C, #A0780E)", boxShadow: "0 6px 16px rgba(160,120,14,0.5), inset 0 1px 1px rgba(255,255,255,0.4)" }}>
-                    <Bot className="w-5 h-5" style={{ color: "#0B1F10" }} />
+                  <div className="relative flex items-center justify-center w-11 h-11 rounded-full overflow-hidden flex-shrink-0" style={{ boxShadow: "0 6px 16px rgba(160,120,14,0.5), inset 0 1px 1px rgba(255,255,255,0.4)", border: "2px solid rgba(217,182,92,0.6)" }}>
+                    <img src={botAvatar} alt="Reddonatura Assistant" className="w-full h-full object-cover" />
                   </div>
                   <div>
                     <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700, fontSize: "0.98rem", color: "#ffffff" }}>Reddonatura</div>
@@ -105,27 +136,108 @@ export function FloatingActions() {
               </div>
             </div>
 
-            <div className="p-5" style={{ backgroundColor: "#F9F8F4" }}>
-              <div className="rounded-2xl rounded-tl-sm px-4 py-3 mb-4" style={{ backgroundColor: "#ffffff", border: "1px solid rgba(23,139,76,0.12)", boxShadow: "0 4px 14px rgba(5,49,20,0.06)" }}>
-                <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 400, fontSize: "0.85rem", color: "#053114", lineHeight: 1.65 }}>
-                  <Sparkles className="inline w-3.5 h-3.5 mb-0.5 mr-1" style={{ color: "#A0780E" }} />
-                  Hi there! I'm the Reddonatura assistant. Tell us what you need and our team will get back to you shortly.
-                </p>
-              </div>
+            {/* Message list */}
+            <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-4 space-y-3" style={{ backgroundColor: "#F9F8F4", minHeight: "220px" }}>
+              {messages.map((m) => (
+                <motion.div
+                  key={m.id}
+                  initial={{ opacity: 0, y: 10, scale: 0.97 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                  className={`flex items-end gap-2 ${m.sender === "user" ? "flex-row-reverse" : ""}`}
+                >
+                  {m.sender === "bot" && (
+                    <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                      <img src={botAvatar} alt="" className="w-full h-full object-cover" />
+                    </div>
+                  )}
+                  <div
+                    className={`px-3.5 py-2.5 max-w-[78%] ${m.sender === "bot" ? "rounded-2xl rounded-bl-sm" : "rounded-2xl rounded-br-sm"}`}
+                    style={{
+                      backgroundColor: m.sender === "bot" ? "#ffffff" : "#178B4C",
+                      border: m.sender === "bot" ? "1px solid rgba(23,139,76,0.12)" : "none",
+                      boxShadow: m.sender === "bot" ? "0 4px 14px rgba(5,49,20,0.06)" : "0 6px 16px rgba(23,139,76,0.3)",
+                    }}
+                  >
+                    <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 400, fontSize: "0.83rem", lineHeight: 1.6, color: m.sender === "bot" ? "#053114" : "#ffffff" }}>
+                      {m.text}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+
+              <AnimatePresence>
+                {isTyping && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 6 }}
+                    className="flex items-end gap-2"
+                  >
+                    <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                      <img src={botAvatar} alt="" className="w-full h-full object-cover" />
+                    </div>
+                    <div className="flex items-center gap-1 px-4 py-3 rounded-2xl rounded-bl-sm" style={{ backgroundColor: "#ffffff", border: "1px solid rgba(23,139,76,0.12)", boxShadow: "0 4px 14px rgba(5,49,20,0.06)" }}>
+                      {[0, 1, 2].map((i) => (
+                        <motion.span
+                          key={i}
+                          className="w-1.5 h-1.5 rounded-full"
+                          style={{ backgroundColor: "#178B4C" }}
+                          animate={{ y: [0, -4, 0] }}
+                          transition={{ duration: 0.7, repeat: Infinity, delay: i * 0.15, ease: "easeInOut" }}
+                        />
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {messages.length === 1 && !isTyping && (
+                <div className="flex flex-wrap gap-2 pt-1">
+                  {suggestedQuestions.map((q) => (
+                    <button
+                      key={q}
+                      onClick={() => sendMessage(q)}
+                      className="px-3 py-1.5 rounded-full text-left transition-all duration-200 hover:-translate-y-0.5"
+                      style={{ backgroundColor: "rgba(23,139,76,0.08)", border: "1px solid rgba(23,139,76,0.2)", fontFamily: "'DM Sans', sans-serif", fontSize: "0.72rem", fontWeight: 500, color: "#178B4C" }}
+                    >
+                      {q}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Composer */}
+            <div className="flex-shrink-0 p-3.5" style={{ backgroundColor: "#ffffff", borderTop: "1px solid rgba(23,139,76,0.1)" }}>
+              <form
+                onSubmit={(e) => { e.preventDefault(); sendMessage(draft); }}
+                className="flex items-center gap-2"
+              >
+                <input
+                  value={draft}
+                  onChange={(e) => setDraft(e.target.value)}
+                  placeholder="Ask about our products, pricing…"
+                  className="flex-1 px-4 py-2.5 rounded-full outline-none transition-all"
+                  style={{ backgroundColor: "#F5F4EF", border: "1px solid rgba(23,139,76,0.15)", fontFamily: "'DM Sans', sans-serif", fontSize: "0.83rem", color: "#053114" }}
+                />
+                <button
+                  type="submit"
+                  aria-label="Send"
+                  disabled={!draft.trim()}
+                  className="flex items-center justify-center w-10 h-10 rounded-full flex-shrink-0 transition-all duration-200 hover:scale-105 disabled:opacity-40"
+                  style={{ background: "linear-gradient(135deg, #1FA05A, #178B4C)", boxShadow: "0 8px 18px rgba(23,139,76,0.35)" }}
+                >
+                  <Send className="w-4 h-4" style={{ color: "#ffffff" }} />
+                </button>
+              </form>
               <button
                 onClick={openLeadForm}
-                className="group w-full flex items-center justify-center gap-2 py-3.5 rounded-full text-[11px] tracking-[0.12em] uppercase transition-all duration-200 hover:-translate-y-0.5 hover:scale-[1.02]"
-                style={{
-                  background: "linear-gradient(135deg, #1FA05A, #178B4C)",
-                  color: "#ffffff", fontFamily: "'DM Sans', sans-serif", fontWeight: 600,
-                  boxShadow: "0 12px 28px rgba(23,139,76,0.4), inset 0 1px 1px rgba(255,255,255,0.3)",
-                }}
+                className="mt-2.5 w-full flex items-center justify-center gap-2 py-2.5 rounded-full text-[10.5px] tracking-[0.1em] uppercase transition-all duration-200 hover:-translate-y-0.5"
+                style={{ backgroundColor: "rgba(23,139,76,0.08)", border: "1px solid rgba(23,139,76,0.2)", fontFamily: "'DM Sans', sans-serif", fontWeight: 600, color: "#178B4C" }}
               >
-                Start a Conversation
+                Start a Conversation with Our Team
               </button>
-              <p className="mt-3.5 text-center" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "10.5px", color: "#9AA89B" }}>
-                Or reach us directly via call, email, or WhatsApp below.
-              </p>
             </div>
           </motion.div>
         )}
@@ -265,11 +377,11 @@ export function FloatingActions() {
         <button
           onClick={() => { setChatOpen((v) => !v); setShowGreeting(false); }}
           aria-label="Chat with Reddonatura"
-          className="group relative flex items-center justify-center rounded-full transition-all duration-300 hover:-translate-y-1.5 hover:scale-110"
+          className="group relative flex items-center justify-center rounded-full overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:scale-110"
           style={{
             width: "62px",
             height: "62px",
-            background: "linear-gradient(150deg, #0B1F10 0%, #178B4C 55%, #A0780E 130%)",
+            backgroundColor: "#103a1f",
             border: "2px solid rgba(217,182,92,0.5)",
             boxShadow: "0 16px 36px rgba(5,49,20,0.5), inset 0 1.5px 1.5px rgba(255,255,255,0.3)",
           }}
@@ -282,7 +394,7 @@ export function FloatingActions() {
           )}
           {!chatOpen && (
             <span
-              className="absolute flex items-center justify-center rounded-full"
+              className="absolute flex items-center justify-center rounded-full z-10"
               style={{ top: "-3px", right: "-3px", width: "16px", height: "16px", backgroundColor: "#ffffff", boxShadow: "0 2px 6px rgba(0,0,0,0.25)" }}
             >
               <span className="w-2 h-2 rounded-full" style={{ backgroundColor: "#4ade80" }} />
@@ -294,8 +406,12 @@ export function FloatingActions() {
                 <X className="w-6 h-6" style={{ color: "#ffffff" }} />
               </motion.div>
             ) : (
-              <motion.div key="bot" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
-                <Bot className="w-6 h-6 transition-transform duration-300 group-hover:scale-110 drop-shadow-sm" style={{ color: "#ffffff" }} />
+              <motion.div key="bot" initial={{ rotate: 90, opacity: 0, scale: 0.6 }} animate={{ rotate: 0, opacity: 1, scale: 1 }} exit={{ rotate: -90, opacity: 0, scale: 0.6 }} transition={{ duration: 0.25 }} className="w-full h-full">
+                <img
+                  src={botAvatar}
+                  alt="Reddonatura chatbot"
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                />
               </motion.div>
             )}
           </AnimatePresence>
