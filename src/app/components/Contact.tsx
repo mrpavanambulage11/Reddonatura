@@ -39,13 +39,13 @@ export function Contact({ onOpenForm }: { onOpenForm: () => void }) {
               transition={{ duration: 0.6, delay: 0.1 }}
             >
               {/* Label */}
-              <div className="flex items-end gap-4 mb-8">
+              <div className="flex flex-wrap items-end gap-x-4 gap-y-1 mb-8">
                  <span
               style={{
                 fontFamily: "'Playfair Display', Georgia, serif",
                 fontStyle: "normal",
                 fontWeight: 400,
-                fontSize: "clamp(2.2rem, 3.5vw, 3.5rem)",
+                fontSize: "clamp(1.9rem, 7vw, 3.5rem)",
                 color: "#0D8239",
                 lineHeight: 1,
               }}
@@ -58,7 +58,7 @@ export function Contact({ onOpenForm }: { onOpenForm: () => void }) {
                 fontFamily: "'Playfair Display', Georgia, serif",
                 fontStyle: "normal",
                 fontWeight: 400,
-                fontSize: "clamp(2.2rem, 3.5vw, 3rem)",
+                fontSize: "clamp(1.9rem, 6vw, 3rem)",
                 color: "#A0780E",
                 lineHeight: 1,
               }}

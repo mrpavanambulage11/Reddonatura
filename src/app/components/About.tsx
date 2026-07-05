@@ -26,13 +26,13 @@ export function About() {
   className="pt-24 pb-10"
 >
   {/* Title */}
-  <div className="flex items-end gap-3">
+  <div className="flex flex-wrap items-end gap-x-3 gap-y-1">
     <span
       style={{
         fontFamily: "'Cormorant Garamond', serif",
-       
+
         fontWeight: 400,
-        fontSize: "clamp(2.4rem, 3.8vw, 3.3rem)",
+        fontSize: "clamp(1.75rem, 7.5vw, 3.3rem)",
         color: "#0D8239",
         lineHeight: 1,
         letterSpacing: "-0.02em",
@@ -44,9 +44,9 @@ export function About() {
     <span
       style={{
         fontFamily: "'Cormorant Garamond', serif",
-        
+
         fontWeight: 400,
-        fontSize: "clamp(2.4rem, 3.8vw, 3.3rem)",
+        fontSize: "clamp(1.75rem, 7.5vw, 3.3rem)",
         color: "#A0780E",
         lineHeight: 1,
         letterSpacing: "-0.02em",
