@@ -54,6 +54,16 @@ button:focus:not(:focus-visible) {
   color: #053114;
 }
 
+/* Custom cursor: only ever hides the native cursor once JS confirms a
+   fine-pointer (mouse) device and mounts the replacement — touch devices
+   never get this class, so Android/iOS are unaffected. */
+@media (pointer: fine) and (hover: hover) {
+  body.rn-cursor-none,
+  body.rn-cursor-none * {
+    cursor: none !important;
+  }
+}
+
 html {
   scrollbar-color: #178B4C #EEF0E8;
   scrollbar-width: thin;

@@ -1,6 +1,13 @@
 import { Link } from "react-router-dom";
+import { motion } from "motion/react";
 import logo from "../../imports/reddonaturafooter logo.png";
 import { Mail, Phone, MapPin, Linkedin, Twitter, Facebook, Instagram, ArrowUpRight } from "lucide-react";
+
+const fadeUp = {
+  initial: { opacity: 0, y: 20 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: "-80px" },
+};
 
 const quickLinks = [
   { href: "#home", label: "Home" },
@@ -55,7 +62,7 @@ export function Footer() {
         {/* Main grid */}
         <div className="grid md:grid-cols-[1.4fr_1fr_1fr_1fr] gap-x-8 gap-y-12 mb-16">
           {/* Brand column */}
-          <div>
+          <motion.div {...fadeUp} transition={{ duration: 0.5, delay: 0 }}>
             <div className="inline-block mb-6 px-3 py-1.5 bg-white">
               <img loading="lazy" decoding="async"
                 src={logo}
@@ -90,10 +97,10 @@ export function Footer() {
                 </a>
               ))}
             </div>
-          </div>
+          </motion.div>
 
           {/* Quick links */}
-          <div>
+          <motion.div {...fadeUp} transition={{ duration: 0.5, delay: 0.08 }}>
             <div className="mb-5" style={labelStyle}>
               Navigation
             </div>
@@ -110,10 +117,10 @@ export function Footer() {
                 </li>
               ))}
             </ul>
-          </div>
+          </motion.div>
 
           {/* Products */}
-          <div>
+          <motion.div {...fadeUp} transition={{ duration: 0.5, delay: 0.16 }}>
             <div className="mb-5" style={labelStyle}>
               Products
             </div>
@@ -130,10 +137,10 @@ export function Footer() {
                 </li>
               ))}
             </ul>
-          </div>
+          </motion.div>
 
           {/* Contact */}
-          <div>
+          <motion.div {...fadeUp} transition={{ duration: 0.5, delay: 0.24 }}>
             <div className="mb-5" style={labelStyle}>
               Contact
             </div>
@@ -196,11 +203,15 @@ export function Footer() {
                 </a>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
 
         {/* Bottom bar */}
-        <div
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.3 }}
           className="grid grid-cols-1 sm:grid-cols-3 items-center gap-4 pt-8"
           style={{ borderTop: "1px solid rgba(245,240,232,0.08)" }}
         >
@@ -254,7 +265,7 @@ export function Footer() {
               </Link>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </footer>
   );

@@ -98,7 +98,8 @@ export function WindrowCompostPage() {
             { cat: "Environmental", items: ["Reduces landfill dependency", "Lowers greenhouse gas emissions", "Circular economy outcomes"] },
             { cat: "Output", items: ["High-grade finished compost", "Sellable agricultural amendment", "Consistent quality through automation"] },
           ].map((g, i) => (
-            <div key={i} className="rn-card-shadow p-6 hover:-translate-y-1" style={{ backgroundColor: "#ffffff", border: "1px solid rgba(23,139,76,0.15)" }}>
+            <motion.div key={i} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.45, delay: 0.1 * i }}
+              className="rn-card-shadow p-6 hover:-translate-y-1" style={{ backgroundColor: "#ffffff", border: "1px solid rgba(23,139,76,0.15)" }}>
               <div className="text-[10px] tracking-[0.18em] uppercase mb-4" style={{ fontFamily: "'DM Mono', monospace", color: "#A0780E" }}>{g.cat}</div>
               {g.items.map((item, j) => (
                 <div key={j} className="flex items-start gap-2 mb-2">
@@ -106,7 +107,7 @@ export function WindrowCompostPage() {
                   <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.875rem", color: "#5A6B5C" }}>{item}</span>
                 </div>
               ))}
-            </div>
+            </motion.div>
           ))}
         </div>
       </Section>

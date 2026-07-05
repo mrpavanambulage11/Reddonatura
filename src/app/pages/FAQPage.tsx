@@ -1,3 +1,4 @@
+import { motion } from "motion/react";
 import { PageLayout, Section, SectionLabel, FAQAccordion, PageCTA, usePageMeta, useStructuredData, breadcrumbSchema } from "./PageLayout";
 
 const faqs = [
@@ -70,12 +71,13 @@ export function FAQPage() {
       breadcrumb="FAQs"
     >
       <Section>
-        <div className="text-center mb-12">
+        <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="text-center mb-12">
           <SectionLabel label="Common Questions" />
           <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: "1rem", color: "#5A6B5C", maxWidth: "560px", margin: "0 auto" }}>
             Everything you need to know about our organic waste converters, biogas plants, and waste-to-resource solutions.
           </p>
-        </div>
+        </motion.div>
         <div className="max-w-3xl mx-auto">
           <FAQAccordion items={faqs} />
         </div>

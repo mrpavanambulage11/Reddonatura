@@ -241,7 +241,9 @@ export function PageLayout({ title, subtitle, breadcrumb, children }: PageLayout
           )}
         </div>
       </div>
-      {children}
+      <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}>
+        {children}
+      </motion.div>
     </div>
   );
 }
@@ -288,6 +290,8 @@ export function FeatureCard({ title, description, icon, centered }: { title: str
 
 export function SpecsTable({ headers, rows }: { headers: string[]; rows: (string | React.ReactNode)[][] }) {
   return (
+    <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      className="relative">
     <div className="overflow-x-auto" style={{ border: "1px solid rgba(5,49,20,0.08)", boxShadow: "0 1px 2px rgba(5,49,20,0.04), 0 16px 32px rgba(5,49,20,0.06)" }}>
       <table className="w-full border-collapse text-left" style={{ minWidth: "600px" }}>
         <thead>
@@ -314,6 +318,10 @@ export function SpecsTable({ headers, rows }: { headers: string[]; rows: (string
         </tbody>
       </table>
     </div>
+    {/* Mobile-only hint that the table scrolls horizontally */}
+    <div className="sm:hidden pointer-events-none absolute top-0 right-0 bottom-0 w-10"
+      style={{ background: "linear-gradient(to right, transparent, rgba(5,49,20,0.10))" }} />
+    </motion.div>
   );
 }
 
@@ -331,7 +339,11 @@ export function FAQItem({
   const toggle = onToggle ?? (() => setLocalOpen((o) => !o));
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: 14 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.4, delay: Math.min(0.04 * (index ?? 0), 0.4) }}
       className="mb-4 p-6 transition-all duration-300"
       style={{
         borderRadius: "1rem",
@@ -389,7 +401,7 @@ export function FAQItem({
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 }
 

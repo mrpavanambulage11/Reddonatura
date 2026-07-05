@@ -273,7 +273,7 @@ export function WetWasteManagementPage() {
       breadcrumb="Wet Waste Management"
     >
       {/* Tab navigation */}
-      <div style={{ backgroundColor: "#053114", position: "sticky", top: "112px", zIndex: 40 }}>
+      <div className="sticky top-[72px] lg:top-[112px]" style={{ backgroundColor: "#053114", zIndex: 40 }}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex overflow-x-auto scrollbar-hide">
             {mainTabs.map(tab => (

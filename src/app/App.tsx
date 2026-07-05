@@ -9,11 +9,11 @@ import { Products } from "./components/Products";
 //import { Statistics, VisionMission } from "./components/Statistics";
 import { VisionMission } from "./components/Statistics";
 import { Industries } from "./components/Industries";
-import GlobalMap from "./components/GlobalMap";
 import { Contact } from "./components/Contact";
 import { Footer } from "./components/Footer";
 import { LeadFormModal } from "./components/LeadFormModal";
 import { FloatingActions } from "./components/FloatingActions";
+import { CustomCursor } from "./components/CustomCursor";
 
 // Route-level code splitting: only the homepage bundle loads on first paint,
 // every other page is fetched on demand when the user navigates to it.
@@ -36,6 +36,9 @@ const DewateringPage = lazy(() => import("./pages/products/DewateringPage").then
 const TrommelScreensPage = lazy(() => import("./pages/products/TrommelScreensPage").then(m => ({ default: m.TrommelScreensPage })));
 const BiogasPage = lazy(() => import("./pages/products/BiogasPage").then(m => ({ default: m.BiogasPage })));
 const SolarPage = lazy(() => import("./pages/products/SolarPage").then(m => ({ default: m.SolarPage })));
+
+// Below-the-fold on the homepage and pulls in the heavy d3/topojson map chain, so defer it.
+const GlobalMap = lazy(() => import("./components/GlobalMap"));
 
 function RouteFallback() {
   return (
@@ -76,7 +79,9 @@ function HomePage({ onOpenForm }: { onOpenForm: () => void }) {
 
       <Industries />
 
-      <GlobalMap />
+      <Suspense fallback={<RouteFallback />}>
+        <GlobalMap />
+      </Suspense>
 
       <Contact onOpenForm={onOpenForm} />
     </main>
@@ -193,6 +198,8 @@ export default function App() {
         />
 
         <FloatingActions />
+
+        <CustomCursor />
       </div>
     </BrowserRouter>
   );

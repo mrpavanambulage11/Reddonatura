@@ -135,10 +135,11 @@ export function SolarPage() {
         <div className="text-center mb-2"><SectionLabel label="Key Benefits" /></div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
           {benefits.map((b, i) => (
-            <div key={i} className="flex items-start gap-3 p-4" style={{ border: "1px solid rgba(23,139,76,0.12)" }}>
+            <motion.div key={i} initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.05 * i }}
+              className="flex items-start gap-3 p-4" style={{ border: "1px solid rgba(23,139,76,0.12)" }}>
               <CheckCircle2 className="w-4 h-4 mt-1 flex-shrink-0" style={{ color: "#178B4C" }} />
               <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: "0.875rem", color: "#5A6B5C", lineHeight: 1.65 }}>{b}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </Section>
